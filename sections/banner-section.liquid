@@ -1,0 +1,168 @@
+{% style %}
+
+.banner_section .banner_sec_wrp{position: relative;}
+.banner_section .banner_back_img_blcok{background-image: url('{{ section.settings.img_back | img_url : "master" }}');background-repeat: no-repeat;background-size: 100%;background-position: left;}
+
+.banner_section .banner_text_block{position: absolute;top:0;left:0;width: 100%;height: 100%;display: flex;align-items: center;}
+.banner_section .banner_text_block figure img{max-width: 300px;margin: 0 auto;vertical-align: middle;}
+.banner_section .banner_text_block .page-width{width: 100%;max-width: 1150px;padding: 0 15px;margin: 0 auto;}
+
+.banner_section .bubble_vector_img .bubble_img{width: 100%;max-width: 120px;margin: 0 auto;vertical-align: middle;}
+
+.banner_section .banner_text_block .banner_logo_wrp{width: 100%;max-width: 400px;text-align: center;display: flex; flex-direction: column;align-items: center;gap: 30px;}
+
+.banner_section .banner_title{font-size: 82px;font-weight: 300;margin-bottom: 30px;}
+
+.banner_section .bubble-link{margin: 0 auto;}
+
+@media (max-width: 1200px){
+
+  .banner_section .banner_text_block .banner_logo_wrp{gap: 20px;}
+  .banner_section .bubble_vector_img .bubble_img{max-width: 80px;}
+
+  .banner_section .banner_title {font-size: 70px;margin-bottom: 15px;}
+
+}
+
+@media (max-width: 991px){
+  .banner_section .banner_text_block .banner_logo_wrp{max-width: 300px;}
+
+  .banner_section .bubble_vector_img .bubble_img {max-width: 70px;}
+
+  .banner_section .banner_text_block figure img {max-width: 200px;}
+
+  .banner_section .banner_title {font-size: 56px;margin-bottom: 15px;}
+
+  .banner_section .bubble-link{font-size: 16px;padding: 8px 12px;}
+
+
+
+}
+
+@media (max-width: 767px){
+
+  .banner_section .banner_text_block{align-items: flex-start;top: 10%;}
+  .banner_section .banner_back_img_blcok{background-size: cover;}
+
+  .banner_section .banner_text_block .banner_logo_wrp {max-width: 400px;margin: 0 auto;}
+  
+}
+
+@media (max-width: 749px){
+ 
+  .banner_section .banner_text_block{top: 5%;}
+  .banner_section .banner_text_block figure img {max-width: 220px;}
+
+  .banner_section .banner_title {font-size: 60px;margin-bottom: 15px;}
+
+}
+
+
+@media (max-width: 575px){
+  .banner_section .banner_text_block figure img{padding-top: 0;}
+  .banner_section .bubble_vector_img .bubble_img {display: none;}
+
+}
+
+  
+{% endstyle %}
+
+
+<div class="banner_section">
+    <div class="banner_sec_wrp">
+         <figure class="banner_back_img_blcok">
+            {% if section.settings.desktop_img != blank %}
+               <img src="{{ section.settings.desktop_img | img_url : "master" }}" alt="{{ section.settings.desktop_img.alt }}" loading="lazy" {% if section.settings.mobile_img != blank %} class="desktop_img"{% endif %}>
+            {% endif %} 
+            {% if section.settings.mobile_img != blank %}
+               <img src="{{ section.settings.mobile_img | img_url : "master" }}" alt="{{ section.settings.mobile_img.alt }}" loading="lazy" class="mobile_img">
+            {% endif %}
+         </figure>
+
+         <div class="banner_text_block">
+            <div class="page-width">
+              <div class="banner_logo_wrp">
+                <div class="bubble_vector_img">
+                  <img class="bubble_img" src="https://cdn.shopify.com/s/files/1/0814/7668/1964/files/Vera_Bubble_Vector.png?v=1771995568" loading="lazy">
+                </div>
+                {% if section.settings.logo_img != blank %}
+                    <figure>
+                        <img src="{{ section.settings.logo_img | img_url : "master" }}" alt="{{ section.settings.logo_img.alt }}" loading="lazy">
+                    </figure>
+                {% endif %}
+                <div class="title_btn_block">
+                    {% if section.settings.title != blank %}
+                    <h1 class="banner_title" style="color: {{ section.settings.title_color }}">{{ section.settings.title }}</h1>
+                    {% endif %}
+                    
+                    {% if section.settings.btn_url != blank %}
+                        <div class="bubble-wrapper">
+                            <a href="{{ section.settings.btn_url }}" class="bubble-link">{{ section.settings.btn_text }}</a>
+                            <div class="bubbles"><span class="bubble big"></span><span class="bubble medium"></span><span class="bubble small"></span></div>
+                        </div>
+                    {% endif %}
+
+
+                </div>
+              </div>  
+            </div>
+         </div>
+
+    </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Banner Section",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "img_back",
+        "label": "Back Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "desktop_img",
+        "label": "Desktop Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "mobile_img",
+        "label": "Mobile Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo_img",
+        "label": "Logo Image"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "VINE TO MIND"
+      },
+      {
+        "type": "color",
+        "id": "title_color",
+        "label": "Title Color",
+        "default": "#fff"
+      },
+      {
+        "type": "text",
+        "id": "btn_text",
+        "label": "Button Text",
+        "default": "SHOP NOW"
+      },
+      {
+        "type": "url",
+        "id": "btn_url",
+        "label": "Button Url"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Banner Section", 
+      }
+    ]
+  }
+{% endschema %}

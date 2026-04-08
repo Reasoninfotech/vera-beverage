@@ -1,0 +1,553 @@
+{% comment %}
+  Section: Body & Mind Perform
+  Pixel-perfect recreation of the "Made to Support How Your Body and Mind Perform" section
+{% endcomment %}
+
+<section class="body-mind-section" style=" background-color: {{ section.settings.background_color }};">
+  <div class="body-mind-section__container">
+    <div class="body-mind-section__content">
+      <h2
+        class="body-mind-section__heading"
+        style="
+          color: {{ section.settings.heading_color }};
+          text-transform: {{ section.settings.heading_text_transform }};
+          line-height: {{ section.settings.heading_line_height }};
+          font-weight: {{ section.settings.heading_font_weight }};
+          margin-bottom: {{ section.settings.heading_bottom_margin }}px;
+        "
+      >
+        {{ section.settings.heading }}
+      </h2>
+
+      <p
+        class="body-mind-section__body"
+        style="
+          color: {{ section.settings.body_text_color }};
+          line-height: {{ section.settings.body_line_height }};
+          margin-bottom: {{ section.settings.body_bottom_margin }}px;
+          max-width: {{ section.settings.text_max_width }}px;
+        "
+      >
+        {{ section.settings.body_text }}
+      </p>
+
+      {% if section.settings.cta_text != blank %}
+        <p
+          class="body-mind-section__cta-text"
+          style="
+            color: {{ section.settings.cta_text_color }};
+            line-height: {{ section.settings.body_line_height }};
+            font-weight: {{ section.settings.cta_text_font_weight }};
+            max-width: {{ section.settings.text_max_width }}px;
+          "
+        >
+          {{ section.settings.cta_text }}
+        </p>
+      {% endif %}
+    </div>
+
+    <div class="body-mind-section__image-wrapper" style=" width: {{ section.settings.image_width }}px; height: {{ section.settings.image_height }}px;">
+      {% if section.settings.image != blank %}
+        <img
+          src="{{ section.settings.image | image_url: width: 800 }}"
+          alt="{{ section.settings.image.alt | escape | default: section.settings.heading }}"
+          width="{{ section.settings.image_width }}"
+          height="{{ section.settings.image_height }}"
+          loading="{{ section.settings.image_loading }}"
+          class="body-mind-section__image"
+        >
+      {% else %}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'body-mind-section__image body-mind-section__image--placeholder' }}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .body-mind-section {
+    width: 100%;
+    padding: {{ section.settings.section_padding_vertical }}px 0;
+    box-sizing: border-box;
+  }
+
+  .body-mind-section__container {
+    max-width: {{ section.settings.container_max_width }}px;
+    margin: 0 auto;
+    padding: 0 {{ section.settings.container_padding_horizontal }}px;
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.content_gap }}px;
+    flex-direction: {% if section.settings.image_position == 'right' %}row{% else %}row-reverse{% endif %};
+  }
+
+  .body-mind-section__content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .body-mind-section__heading {
+    font-size: {{ section.settings.heading_font_size }}px;
+    margin: 0 0 {{ section.settings.heading_bottom_margin }}px;
+    padding: 0;
+  }
+
+  .body-mind-section__body {
+    font-size: {{ section.settings.body_font_size }}px;
+    margin: 0 0 {{ section.settings.body_bottom_margin }}px;
+    padding: 0;
+  }
+
+  .body-mind-section__cta-text {
+    font-size: {{ section.settings.cta_text_font_size }}px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .body-mind-section__image-wrapper {
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: {{ section.settings.image_border_radius }}px;
+
+  }
+
+  .body-mind-section__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .body-mind-section__image--placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: #e0e0e0;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .body-mind-section__container {
+      gap: 40px;
+    }
+
+    .body-mind-section__image-wrapper {
+      width: 380px !important;
+      height: 450px !important;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+
+    .body-mind-section {
+      padding: {{ section.settings.section_padding_vertical_tablet }}px 0;
+    }
+
+    .body-mind-section__container {
+      padding: 0 {{ section.settings.container_padding_horizontal_mobile }}px;
+      flex-direction: column !important;
+      gap: 32px;
+    }
+
+    .body-mind-section__image-wrapper {
+      width: 100% !important;
+      max-width: 100%;
+    }
+
+    .body-mind-section__heading {
+      font-size: {{ section.settings.heading_font_size_tablet }}px;
+    }
+
+    .body-mind-section__body{
+      font-size: {{ section.settings.body_font_size_tablet }}px;
+    }
+
+    .body-mind-section__body,
+    .body-mind-section__cta-text {
+      max-width: 100% !important;
+    }
+
+    .body-mind-section__cta-text{
+     font-size: {{ section.settings.cta_text_font_size_tablet }}px;
+    }
+    
+  }
+
+  @media (max-width: 575px){
+
+    .body-mind-section {
+      padding: {{ section.settings.section_padding_vertical_mobile }}px 0;
+    }
+
+    .body-mind-section__heading {
+      font-size: {{ section.settings.heading_font_size_mobile }}px;
+    }
+
+    .body-mind-section__body{
+      font-size: {{ section.settings.body_font_size_mobile }}px;
+    }
+
+    .body-mind-section__cta-text{
+      font-size: {{ section.settings.cta_text_font_size_mobile }}px;
+    }
+  
+  }
+
+</style>
+
+{% schema %}
+{
+  "name": "Body & Mind Perform",
+  "tag": "section",
+  "class": "section-body-mind-perform",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout & Container"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width (px)",
+      "min": 800,
+      "max": 1600,
+      "step": 20,
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "container_padding_horizontal",
+      "label": "Container Horizontal Padding (px)",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "container_padding_horizontal_mobile",
+      "label": "Container Horizontal Padding Mobile (px)",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_vertical",
+      "label": "Section Vertical Padding (px)",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_padding_vertical_tablet",
+      "label": "Section Vertical Padding Tablet (px)",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_padding_vertical_mobile",
+      "label": "Section Vertical Padding Mobile (px)",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "content_gap",
+      "label": "Gap Between Content & Image (px)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 80
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Position",
+      "options": [
+        { "value": "right", "label": "Right (default)" },
+        { "value": "left", "label": "Left" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#F0EFED"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading Text",
+      "default": "MADE TO SUPPORT HOW YOUR BODY AND MIND PERFORM."
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#7B2D8B"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading Font Size (px)",
+      "min": 16,
+      "max": 80,
+      "step": 1,
+      "default": 62
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_tablet",
+      "label": "Heading Font Size Tablet (px)",
+      "min": 16,
+      "max": 80,
+      "step": 1,
+      "default": 46
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "label": "Heading Font Size Mobile (px)",
+      "min": 16,
+      "max": 80,
+      "step": 1,
+      "default": 36
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading Font Weight",
+      "options": [
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra Bold (800)" },
+        { "value": "900", "label": "Black (900)" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select",
+      "id": "heading_text_transform",
+      "label": "Heading Text Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "UPPERCASE" },
+        { "value": "lowercase", "label": "lowercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "uppercase"
+    },
+    {
+    "type": "range",
+    "id": "heading_line_height",
+    "label": "Heading Line Height",
+    "min": 1,
+    "max": 2,
+    "step": 0.1,
+    "default": 1.1
+    },
+    {
+      "type": "range",
+      "id": "heading_bottom_margin",
+      "label": "Heading Bottom Margin (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Body Text"
+    },
+    {
+      "type": "textarea",
+      "id": "body_text",
+      "label": "Body Text",
+      "default": "Every ingredient in Vera is chosen for a reason. We start with antioxidant-rich Vinifera red grapes — one of nature's most trusted sources of nutrition — then enhance it with science-backed adaptogens, nootropics, and nutrients that support how your mind and body naturally perform."
+    },
+    {
+      "type": "color",
+      "id": "body_text_color",
+      "label": "Body Text Color",
+      "default": "#3D3D3D"
+    },
+    {
+      "type": "range",
+      "id": "body_font_size",
+      "label": "Body Font Size (px)",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "body_font_size_tablet",
+      "label": "Body Font Size Tablet (px)",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "body_font_size_mobile",
+      "label": "Body Font Size Mobile (px)",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "default": 16
+    },
+    {
+    "type": "range",
+    "id": "body_line_height",
+    "label": "Body Line Height",
+    "min": 1,
+    "max": 2.5,
+    "step": 0.1,
+    "default": 1.7
+    },
+    {
+      "type": "range",
+      "id": "body_bottom_margin",
+      "label": "Body Bottom Margin (px)",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "text_max_width",
+      "label": "Text Max Width (px)",
+      "min": 200,
+      "max": 800,
+      "step": 10,
+      "default": 520
+    },
+    {
+      "type": "header",
+      "content": "CTA / Highlight Text"
+    },
+    {
+      "type": "textarea",
+      "id": "cta_text",
+      "label": "CTA / Highlight Text",
+      "default": "No artificial shortcuts. No unnecessary fillers. Just ingredients that help you feel good and stay clear-headed."
+    },
+    {
+      "type": "color",
+      "id": "cta_text_color",
+      "label": "CTA Text Color",
+      "default": "#7B2D8B"
+    },
+    {
+      "type": "range",
+      "id": "cta_text_font_size",
+      "label": "CTA Text Font Size (px)",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "cta_text_font_size_tablet",
+      "label": "CTA Text Font Size Tablet (px)",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "cta_text_font_size_mobile",
+      "label": "CTA Text Font Size Mobile (px)",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "cta_text_font_weight",
+      "label": "CTA Text Font Weight",
+      "options": [
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Section Image"
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "label": "Image Width (px)",
+      "min": 200,
+      "max": 800,
+      "step": 10,
+      "default": 310
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image Height (px)",
+      "min": 200,
+      "max": 900,
+      "step": 10,
+      "default": 520
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "label": "Image Border Radius (px)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "image_loading",
+      "label": "Image Loading",
+      "options": [
+        { "value": "lazy", "label": "Lazy (recommended)" },
+        { "value": "eager", "label": "Eager (above the fold)" }
+      ],
+      "default": "lazy"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Body & Mind Perform",
+      "category": "Content"
+    }
+  ]
+}
+{% endschema %}

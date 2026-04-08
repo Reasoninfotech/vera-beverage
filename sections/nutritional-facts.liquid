@@ -1,0 +1,1027 @@
+{%- liquid
+  assign section_bg = section.settings.section_bg
+
+  assign pt_d = section.settings.padding_top_desktop
+  assign pb_d = section.settings.padding_bottom_desktop
+  assign pt_t = section.settings.padding_top_tablet
+  assign pb_t = section.settings.padding_bottom_tablet
+  assign pt_m = section.settings.padding_top_mobile
+  assign pb_m = section.settings.padding_bottom_mobile
+
+  assign heading = section.settings.heading
+  assign heading_color = section.settings.heading_color
+  assign h_size_d = section.settings.heading_size_desktop
+  assign h_size_t = section.settings.heading_size_tablet
+  assign h_size_m = section.settings.heading_size_mobile
+  assign h_align_d = section.settings.heading_align_desktop
+  assign h_align_t = section.settings.heading_align_tablet
+  assign h_align_m = section.settings.heading_align_mobile
+
+  assign subtext = section.settings.subtext
+  assign sub_color = section.settings.subtext_color
+  assign sub_size_d = section.settings.subtext_size_desktop
+  assign sub_size_t = section.settings.subtext_size_tablet
+  assign sub_size_m = section.settings.subtext_size_mobile
+
+  assign slides_d = section.settings.slides_desktop
+  assign slides_t = section.settings.slides_tablet
+  assign slides_m = section.settings.slides_mobile
+  assign gap_d = section.settings.gap_desktop
+  assign gap_t = section.settings.gap_tablet
+  assign gap_m = section.settings.gap_mobile
+
+  assign card_bg = section.settings.card_bg
+  assign card_border = section.settings.card_border
+  assign card_radius = section.settings.card_radius
+  assign card_shadow = section.settings.card_shadow
+
+  assign label_bg = section.settings.label_bg
+  assign label_color = section.settings.label_color
+  assign label_size_d = section.settings.label_size_desktop
+  assign label_size_t = section.settings.label_size_tablet
+  assign label_size_m = section.settings.label_size_mobile
+
+  assign badge_bg = section.settings.badge_bg
+  assign badge_color = section.settings.badge_color
+  assign badge_size_d = section.settings.badge_size_desktop
+  assign badge_size_t = section.settings.badge_size_tablet
+  assign badge_size_m = section.settings.badge_size_mobile
+
+  assign content_color = section.settings.content_color
+  assign con_size_d = section.settings.content_size_desktop
+  assign con_size_t = section.settings.content_size_tablet
+  assign con_size_m = section.settings.content_size_mobile
+
+  assign show_pagination = section.settings.show_pagination
+  assign show_navigation = section.settings.show_navigation
+  assign autoplay = section.settings.autoplay
+  assign autoplay_delay = section.settings.autoplay_delay
+
+  assign nav_color = section.settings.nav_color
+  assign nav_bg = section.settings.nav_bg
+  assign dot_active = section.settings.dot_active
+  assign dot_inactive = section.settings.dot_inactive
+-%}
+
+<style>
+  #s-{{ section.id }} {
+    background: {{ section_bg }};
+    padding-top: {{ pt_m }}px;
+    padding-bottom: {{ pb_m }}px;
+    overflow: hidden;
+    --card-bg: {{ card_bg }};
+    --card-border: {{ card_border }};
+    --card-radius: {{ card_radius }}px;
+    --card-shadow: {% if card_shadow %}0 8px 32px rgba(0,0,0,0.13){% else %}none{% endif %};
+    --label-bg: {{ label_bg }};
+    --label-color: {{ label_color }};
+    --badge-bg: {{ badge_bg }};
+    --badge-color: {{ badge_color }};
+    --content-color: {{ content_color }};
+    --nav-color: {{ nav_color }};
+    --nav-bg: {{ nav_bg }};
+    --dot-active: {{ dot_active }};
+    --dot-inactive: {{ dot_inactive }};
+    --heading-color: {{ heading_color }};
+    --sub-color: {{ sub_color }};
+  }
+  #s-{{ section.id }} .nf-heading {
+    font-size: {{ h_size_m }}px;
+    text-align: {{ h_align_m }};
+  }
+  #s-{{ section.id }} .nf-subtext {
+    font-size: {{ sub_size_m }}px;
+    text-align: {{ h_align_m }};
+  }
+  #s-{{ section.id }} .nf-card__label  { font-size: {{ label_size_m }}px; }
+  #s-{{ section.id }} .nf-card__badge  { font-size: {{ badge_size_m }}px; }
+  #s-{{ section.id }} .nf-card__content { font-size: {{ con_size_m }}px; }
+  #s-{{ section.id }} { padding-right: 60px;padding-left: 60px;}
+  @media (min-width: 768px) {
+    #s-{{ section.id }} {
+      padding-top: {{ pt_t }}px;
+      padding-bottom: {{ pb_t }}px;
+          padding-right: 60px;
+        padding-left: 60px;
+    }
+    #s-{{ section.id }} .nf-heading {
+      font-size: {{ h_size_t }}px;
+      text-align: {{ h_align_t }};
+    }
+    #s-{{ section.id }} .nf-subtext {
+      font-size: {{ sub_size_t }}px;
+      text-align: {{ h_align_t }};
+    }
+    #s-{{ section.id }} .nf-card__label  { font-size: {{ label_size_t }}px; }
+    #s-{{ section.id }} .nf-card__badge  { font-size: {{ badge_size_t }}px; }
+    #s-{{ section.id }} .nf-card__content { font-size: {{ con_size_t }}px; }
+    #s-{{ section.id }} .nf-nav { display: flex; }
+  }
+
+  @media (min-width: 1024px) {
+    #s-{{ section.id }} {
+      padding-top: {{ pt_d }}px;
+      padding-bottom: {{ pb_d }}px;
+              padding-right: 60px;
+        padding-left: 60px;
+    }
+    #s-{{ section.id }} .nf-heading {
+      font-size: {{ h_size_d }}px;
+      text-align: {{ h_align_d }};
+    }
+    #s-{{ section.id }} .nf-subtext {
+      font-size: {{ sub_size_d }}px;
+      text-align: {{ h_align_d }};
+    }
+    #s-{{ section.id }} .nf-card__label  { font-size: {{ label_size_d }}px; }
+    #s-{{ section.id }} .nf-card__badge  { font-size: {{ badge_size_d }}px; }
+    #s-{{ section.id }} .nf-card__content { font-size: {{ con_size_d }}px; }
+  }
+
+  #s-{{ section.id }} .nf-container {
+    max-width: 1120px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+
+  #s-{{ section.id }} .nf-header { margin-bottom: 36px; }
+  #s-{{ section.id }} .nf-heading {
+    color: var(--heading-color);
+    text-align: center;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+  #s-{{ section.id }} .nf-subtext {
+    color: var(--sub-color);
+    line-height: 1.65;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  #s-{{ section.id }} .nf-subtext p { margin: 0; }
+
+  #s-{{ section.id }} .nf-swiper {
+    padding-bottom: {% if show_pagination %}52px{% else %}8px{% endif %} !important;
+  }
+  #s-{{ section.id }} .swiper-wrapper { align-items: stretch; }
+  #s-{{ section.id }} .swiper-slide { height: auto; }
+
+  #s-{{ section.id }} .nf-card {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: transform .32s cubic-bezier(.22,1,.36,1), box-shadow .32s ease;
+    cursor: pointer;
+  }
+  #s-{{ section.id }} .nf-card:hover {
+    transform: translateY(-6px);
+  }
+
+  #s-{{ section.id }} .nf-card__label {
+    background: var(--label-bg);
+    color: var(--label-color);
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-align: center;
+    padding: 14px 20px;
+    text-transform: uppercase;
+  }
+
+  #s-{{ section.id }} .nf-card__image-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #s-{{ section.id }} .nf-card__image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  #s-{{ section.id }} .nf-card__badge {
+       color: #000000;
+    font-weight: 500;
+    text-transform: uppercase;
+        font-size: 17px;
+    letter-spacing: 0;
+    line-height: normal;
+        padding: 25px 0 10px 0;
+
+  }
+
+  #s-{{ section.id }} .nf-card__content {
+    color: var(--content-color);
+        line-height: normal;
+            font-weight: 400;  }
+  #s-{{ section.id }} .nf-card__content p { margin: 0 0 6px; }
+  #s-{{ section.id }} .nf-card__content p:last-child { margin-bottom: 0; }
+  #s-{{ section.id }} .nf-card__content strong { font-weight: 700; }
+
+  /* ── Nav Arrows ── */
+  #s-{{ section.id }} .nf-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(calc(-50% - 26px));
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    border: 2px solid var(--nav-color);
+    background: var(--nav-bg);
+    color: var(--nav-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background .2s, color .2s, transform .25s;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.10);
+  }
+  #s-{{ section.id }} .nf-nav:hover {
+    background: var(--nav-color);
+    color: var(--nav-bg);
+    transform: translateY(calc(-50% - 26px)) scale(1.08);
+  }
+  #s-{{ section.id }} .nf-nav.swiper-button-disabled { opacity: .3; pointer-events: none; }
+  #s-{{ section.id }} .nf-nav--prev { left: -55px; }
+  #s-{{ section.id }} .nf-nav--next { right: -55px; }
+
+  /* ── Pagination ── */
+  #s-{{ section.id }} .nf-pagination {
+    bottom: 0 !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  #s-{{ section.id }} .nf-pagination .swiper-pagination-bullet {
+    width: 8px; height: 8px;
+    border-radius: 999px;
+    background: var(--dot-inactive);
+    opacity: 1;
+    margin: 0 !important;
+    transition: width .3s, background .3s;
+  }
+  #s-{{ section.id }} .nf-pagination .swiper-pagination-bullet-active {
+    background: var(--dot-active);
+    width: 26px;
+  }
+</style>
+
+<section id="s-{{ section.id }}" class="nf-section">
+  <div class="nf-container">
+    {%- if heading != blank or subtext != blank -%}
+      <div class="nf-header">
+        {%- if heading != blank -%}
+          <h2 class="nf-heading">{{ heading | escape }}</h2>
+        {%- endif -%}
+        {%- if subtext != blank -%}
+          <div class="nf-subtext">{{ subtext }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div style="position:relative;">
+        <div class="swiper nf-swiper" id="nf-sw-{{ section.id }}">
+          <div class="swiper-wrapper">
+            {%- for block in section.blocks -%}
+              <div class="swiper-slide" {{ block.shopify_attributes }}>
+                <div class="nf-card">
+                  {%- if block.settings.card_label != blank -%}
+                    <div class="nf-card__label">{{ block.settings.card_label }}</div>
+                  {%- endif -%}
+
+                  {%- if block.settings.image != blank -%}
+                    <div class="nf-card__image-wrap">
+                      {{
+                        block.settings.image
+                        | image_url: width: 600
+                        | image_tag:
+                          loading: 'lazy',
+                          class: 'nf-card__image',
+                          widths: '280, 400, 600',
+                          alt: block.settings.image.alt
+                        | default: block.settings.card_label
+                      }}
+                    </div>
+                  {%- endif -%}
+
+                  {%- if block.settings.badge_text != blank -%}
+                    <div class="nf-card__badge">{{ block.settings.badge_text }}</div>
+                  {%- endif -%}
+
+                  {%- if block.settings.content != blank -%}
+                    <div class="nf-card__content rte">{{ block.settings.content }}</div>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+
+          {%- if show_pagination -%}
+            <div class="swiper-pagination nf-pagination" id="nf-pg-{{ section.id }}"></div>
+          {%- endif -%}
+        </div>
+
+        {%- if show_navigation -%}
+          <button class="nf-nav nf-nav--prev" id="nf-pv-{{ section.id }}" aria-label="Previous">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button class="nf-nav nf-nav--next" id="nf-nx-{{ section.id }}" aria-label="Next">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </button>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<script>
+  (function () {
+    var SECTION_ID = '{{ section.id }}';
+
+    function boot() {
+      if (typeof Swiper === 'undefined') {
+        console.warn('Swiper is not loaded in theme.');
+        return;
+      }
+
+      var wrapper = document.getElementById('nf-sw-' + SECTION_ID);
+      if (!wrapper) return;
+
+      if (wrapper._swiperInstance) {
+        wrapper._swiperInstance.destroy(true, true);
+        wrapper._swiperInstance = null;
+      }
+
+      var options = {
+        slidesPerView: {{ slides_m }},
+        spaceBetween: {{ gap_m }},
+        grabCursor: true,
+        loop: true,
+        watchOverflow: true,
+        breakpoints: {
+          0:  { slidesPerView: 1 },
+          575:  { slidesPerView: {{ slides_m }}, spaceBetween: {{ gap_m }} },
+          768:  { slidesPerView: {{ slides_t }}, spaceBetween: {{ gap_t }} },
+          1024: { slidesPerView: {{ slides_d }}, spaceBetween: {{ gap_d }} }
+        }
+      };
+
+      {% if autoplay %}
+      options.autoplay = {
+        delay: {{ autoplay_delay }},
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+      };
+      {% endif %}
+
+      {% if show_pagination %}
+      options.pagination = {
+        el: '#nf-pg-' + SECTION_ID,
+        clickable: true
+      };
+      {% endif %}
+
+      {% if show_navigation %}
+      options.navigation = {
+        prevEl: '#nf-pv-' + SECTION_ID,
+        nextEl: '#nf-nx-' + SECTION_ID
+      };
+      {% endif %}
+
+      wrapper._swiperInstance = new Swiper('#nf-sw-' + SECTION_ID, options);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', boot);
+    } else {
+      boot();
+    }
+    if (window.Shopify && Shopify.designMode) {
+      document.addEventListener('shopify:section:load', function (e) {
+        if (e.detail.sectionId === SECTION_ID) boot();
+      });
+      document.addEventListener('shopify:section:reorder', function (e) {
+        if (e.detail.sectionId === SECTION_ID) boot();
+      });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Nutritional Facts Slider",
+  "tag": "section",
+  "class": "nf-section-outer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "🎨 Section Background"
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Background Color",
+      "default": "#f9f7f4"
+    },
+
+    {
+      "type": "header",
+      "content": "📐 Padding — Desktop (≥1024px)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+
+    {
+      "type": "header",
+      "content": "📐 Padding — Tablet (768–1023px)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_tablet",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_tablet",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+
+    {
+      "type": "header",
+      "content": "📐 Padding — Mobile (<768px)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+
+    {
+      "type": "header",
+      "content": "📝 Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading Text",
+      "default": "Nutritional Facts"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#7B2D8B"
+    },
+    {
+      "type": "header",
+      "content": "📝 Heading Alignment"
+    },
+    {
+      "type": "select",
+      "id": "heading_align_desktop",
+      "label": "Alignment — Desktop",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "heading_align_tablet",
+      "label": "Alignment — Tablet",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "heading_align_mobile",
+      "label": "Alignment — Mobile",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "📝 Heading Font Size"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "label": "Font Size — Desktop",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "heading_size_tablet",
+      "label": "Font Size — Tablet",
+      "min": 18,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Font Size — Mobile",
+      "min": 16,
+      "max": 44,
+      "step": 2,
+      "unit": "px",
+      "default": 26
+    },
+
+    {
+      "type": "header",
+      "content": "💬 Subtext"
+    },
+    {
+      "type": "richtext",
+      "id": "subtext",
+      "label": "Subtext / Description"
+    },
+    {
+      "type": "color",
+      "id": "subtext_color",
+      "label": "Subtext Color",
+      "default": "#555555"
+    },
+    {
+      "type": "range",
+      "id": "subtext_size_desktop",
+      "label": "Subtext Size — Desktop",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "subtext_size_tablet",
+      "label": "Subtext Size — Tablet",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "subtext_size_mobile",
+      "label": "Subtext Size — Mobile",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+
+    {
+      "type": "header",
+      "content": "🃏 Card Style"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_border",
+      "label": "Card Border Color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Border Radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "card_shadow",
+      "label": "Enable Card Shadow",
+      "default": true
+    },
+
+    {
+      "type": "header",
+      "content": "🏷️ Card Label (Top Banner)"
+    },
+    {
+      "type": "color",
+      "id": "label_bg",
+      "label": "Label Background",
+      "default": "#8B2252"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "label_size_desktop",
+      "label": "Label Size — Desktop",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "label_size_tablet",
+      "label": "Label Size — Tablet",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "label_size_mobile",
+      "label": "Label Size — Mobile",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+
+    {
+      "type": "header",
+      "content": "🥇 Badge (Below Image)"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg",
+      "label": "Badge Background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "badge_color",
+      "label": "Badge Text Color",
+      "default": "#111111"
+    },
+    {
+      "type": "range",
+      "id": "badge_size_desktop",
+      "label": "Badge Size — Desktop",
+      "min": 10,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "badge_size_tablet",
+      "label": "Badge Size — Tablet",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "badge_size_mobile",
+      "label": "Badge Size — Mobile",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+
+    {
+      "type": "header",
+      "content": "📄 Card Content (Richtext)"
+    },
+    {
+      "type": "color",
+      "id": "content_color",
+      "label": "Content Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "content_size_desktop",
+      "label": "Content Size — Desktop",
+      "min": 11,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "content_size_tablet",
+      "label": "Content Size — Tablet",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "content_size_mobile",
+      "label": "Content Size — Mobile",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+
+    {
+      "type": "header",
+      "content": "🎠 Slider — Slides Per View"
+    },
+    {
+      "type": "range",
+      "id": "slides_desktop",
+      "label": "Slides — Desktop (≥1024px)",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "slides_tablet",
+      "label": "Slides — Tablet (768–1023px)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "slides_mobile",
+      "label": "Slides — Mobile (<768px)",
+      "min": 1,
+      "max": 3,
+      "step": 0.5,
+      "default": 1.5
+    },
+
+    {
+      "type": "header",
+      "content": "🎠 Slider — Gap Between Slides"
+    },
+    {
+      "type": "range",
+      "id": "gap_desktop",
+      "label": "Gap — Desktop",
+      "min": 8,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "gap_tablet",
+      "label": "Gap — Tablet",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "gap_mobile",
+      "label": "Gap — Mobile",
+      "min": 8,
+      "max": 32,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+
+    {
+      "type": "header",
+      "content": "🎠 Slider — Controls"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show Pagination Dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show Prev / Next Arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable Autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_delay",
+      "label": "Autoplay Delay",
+      "min": 1000,
+      "max": 8000,
+      "step": 500,
+      "unit": "ms",
+      "default": 4000
+    },
+
+    {
+      "type": "header",
+      "content": "⬅️ Arrow Colors"
+    },
+    {
+      "type": "color",
+      "id": "nav_color",
+      "label": "Arrow Color",
+      "default": "#7B2D8B"
+    },
+    {
+      "type": "color",
+      "id": "nav_bg",
+      "label": "Arrow Background",
+      "default": "#ffffff"
+    },
+
+    {
+      "type": "header",
+      "content": "⚫ Pagination Dots"
+    },
+    {
+      "type": "color",
+      "id": "dot_active",
+      "label": "Active Dot Color",
+      "default": "#7B2D8B"
+    },
+    {
+      "type": "color",
+      "id": "dot_inactive",
+      "label": "Inactive Dot Color",
+      "default": "#cccccc"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "nf_card",
+      "name": "Nutrition Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "card_label",
+          "label": "Card Label (Top Banner)",
+          "default": "Black Cherry"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Nutrition Facts Image"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge Text (Below Image)",
+          "default": "Contains at least 23% Vinifera Grape Juice"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Card Content (Ingredients / Notes)",
+          "default": "<p><strong>INGREDIENTS:</strong> Water, Zinfandel Red Grape Juice (from Concentrate), Contains Less Than 2% Of: Natural Flavors, Citric Acid, Magnesium Glycinate, L-Theanine, Organic Ashwaganda Mushroom Root Powder, Organic Lion's Mane Mushroom Root Powder, Vitamin B12.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nutritional Facts Slider",
+      "blocks": [
+        {
+          "type": "nf_card",
+          "settings": {
+            "card_label": "Black Cherry",
+            "badge_text": "Contains at least 23% Vinifera Grape Juice",
+            "content": "<p><strong>INGREDIENTS:</strong> Water, Zinfandel Red Grape Juice (from Concentrate), Contains Less Than 2% Of: Natural Flavors, Citric Acid, Magnesium Glycinate, L-Theanine, Organic Ashwaganda Mushroom Root Powder, Organic Lion's Mane Mushroom Root Powder, Vitamin B12.</p>"
+          }
+        },
+        {
+          "type": "nf_card",
+          "settings": {
+            "card_label": "Raspberry",
+            "badge_text": "Contains at least 24% Vinifera Grape Juice",
+            "content": "<p><strong>INGREDIENTS:</strong> Water, Zinfandel Red Grape Juice (from Concentrate), Contains Less Than 2% Of: Citric Acid, Natural Flavors, Magnesium Glycinate, L-Theanine, Organic Ashwaganda Mushroom Root Powder, Organic Lion's Mane Mushroom Root Powder, Vitamin B12.</p>"
+          }
+        },
+        {
+          "type": "nf_card",
+          "settings": {
+            "card_label": "Blueberry Mint",
+            "badge_text": "Contains at least 24% Vinifera Grape Juice",
+            "content": "<p><strong>INGREDIENTS:</strong> Water, Zinfandel Red Grape Juice (from Concentrate), Contains Less Than 2% Of: Natural Flavors, Citric Acid, Magnesium Glycinate, L-Theanine, Organic Ashwaganda Mushroom Root Powder, Organic Lion's Mane Mushroom Root Powder, Vitamin B12.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

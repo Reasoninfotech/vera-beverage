@@ -1,0 +1,688 @@
+{% comment %}
+  Section: Join The Party - Email Signup Hero
+  Theme: Horizon
+  Version: 1.0.0
+{% endcomment %}
+
+{%- liquid
+  assign section_id = section.id
+  assign bg_image = section.settings.background_image
+  assign overlay_color = section.settings.overlay_color
+  assign overlay_opacity = section.settings.overlay_opacity | divided_by: 100.0
+  assign enable_gradient = section.settings.enable_gradient_overlay
+  assign gradient_start = section.settings.gradient_start_color
+  assign gradient_end = section.settings.gradient_end_color
+  assign gradient_angle = section.settings.gradient_angle
+
+  assign title = section.settings.title
+  assign subtitle = section.settings.subtitle
+
+  assign section_height_desktop = section.settings.section_height_desktop
+  assign section_height_tablet = section.settings.section_height_tablet
+  assign section_height_mobile = section.settings.section_height_mobile
+
+  assign content_align = section.settings.content_alignment
+  assign content_position = section.settings.content_vertical_position
+
+  assign title_color = section.settings.title_color
+  assign subtitle_color = section.settings.subtitle_color
+
+  assign title_size_desktop = section.settings.title_font_size_desktop
+  assign title_size_tablet = section.settings.title_font_size_tablet
+  assign title_size_mobile = section.settings.title_font_size_mobile
+
+  assign subtitle_size_desktop = section.settings.subtitle_font_size_desktop
+  assign subtitle_size_tablet = section.settings.subtitle_font_size_tablet
+  assign subtitle_size_mobile = section.settings.subtitle_font_size_mobile
+
+  assign title_font_weight = section.settings.title_font_weight
+  assign title_letter_spacing = section.settings.title_letter_spacing
+  assign title_line_height = section.settings.title_line_height
+  assign subtitle_line_height = section.settings.subtitle_line_height
+
+  assign show_bubble_icon = section.settings.show_bubble_icon
+  assign max_content_width = section.settings.max_content_width
+  assign input_max_width = section.settings.input_max_width
+
+  assign padding_top_desktop = section.settings.padding_top_desktop
+  assign padding_bottom_desktop = section.settings.padding_bottom_desktop
+  assign padding_top_mobile = section.settings.padding_top_mobile
+  assign padding_bottom_mobile = section.settings.padding_bottom_mobile
+-%}
+
+<style>
+  #jtp-section-{{ section_id }} {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: {% if content_position == 'top' %}flex-start{% elsif content_position == 'bottom' %}flex-end{% else %}center{% endif %};
+    justify-content: {% if content_align == 'left' %}flex-start{% elsif content_align == 'right' %}flex-end{% else %}center{% endif %};
+    min-height: {{ section_height_mobile }}px;
+    padding-top: {{ padding_top_mobile }}px;
+    padding-bottom: {{ padding_bottom_mobile }}px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  #jtp-section-{{ section_id }} .jtp-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+  }
+
+  #jtp-section-{{ section_id }} .jtp-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    {% if enable_gradient %}
+      background: linear-gradient({{ gradient_angle }}deg, {{ gradient_start }}, {{ gradient_end }});
+      opacity: {{ overlay_opacity }};
+    {% else %}
+      background-color: {{ overlay_color }};
+      opacity: {{ overlay_opacity }};
+    {% endif %}
+  }
+
+  #jtp-section-{{ section_id }} .jtp-content {
+    position: relative;
+    z-index: 2;
+    text-align: {{ content_align }};
+    max-width: {{ max_content_width }}px;
+    width: 100%;
+    {% if content_align == 'center' %}
+      margin-left: auto;
+      margin-right: auto;
+    {% elsif content_align == 'right' %}
+      margin-left: auto;
+    {% endif %}
+  }
+
+  #jtp-section-{{ section_id }} .jtp-bubble-icon {
+    display: {% if show_bubble_icon %}inline-block{% else %}none{% endif %};
+    margin-bottom: 12px;
+    {% if content_align == 'center' %}text-align: center;{% endif %}
+    
+    max-width: 80px;
+  }
+
+  #jtp-section-{{ section_id }} .jtp-bubble-icon svg {
+    width: 48px;
+    height: 60px;
+    opacity: 0.9;
+  }
+
+  #jtp-section-{{ section_id }} .jtp-title {
+    font-size: {{ title_size_mobile }}px;
+    font-weight: {{ title_font_weight }};
+    color: {{ title_color }};
+    letter-spacing: {{ title_letter_spacing }}em;
+    line-height: {{ title_line_height }};
+    margin: 0 0 16px;
+    text-transform: uppercase;
+  }
+
+  #jtp-section-{{ section_id }} .jtp-subtitle p{
+    font-size: {{ subtitle_size_mobile }}px;
+    color: {{ subtitle_color }};
+    line-height: {{ subtitle_line_height }};
+    margin: 0 0 28px;
+    max-width: 480px;
+    {% if content_align == 'center' %}
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 28px;
+    {% endif %}
+  }
+
+  #jtp-section-{{ section_id }} .jtp-form-wrapper {
+    max-width: {{ input_max_width }}px;
+    width: 100%;
+    {% if content_align == 'center' %}
+      margin-left: auto;
+      margin-right: auto;
+    {% elsif content_align == 'right' %}
+      margin-left: auto;
+    {% endif %}
+  }
+
+  /* Tablet */
+  @media screen and (min-width: 750px) {
+    #jtp-section-{{ section_id }} {
+      min-height: {{ section_height_tablet }}px;
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+
+    #jtp-section-{{ section_id }} .jtp-title {
+      font-size: {{ title_size_tablet }}px;
+    }
+
+    #jtp-section-{{ section_id }} .jtp-subtitle p{
+      font-size: {{ subtitle_size_tablet }}px;
+    }
+  }
+
+  /* Desktop */
+  @media screen and (min-width: 1024px) {
+    #jtp-section-{{ section_id }} {
+      min-height: {{ section_height_desktop }}px;
+      padding-top: {{ padding_top_desktop }}px;
+      padding-bottom: {{ padding_bottom_desktop }}px;
+      padding-left: 60px;
+      padding-right: 60px;
+    }
+
+    #jtp-section-{{ section_id }} .jtp-title {
+      font-size: {{ title_size_desktop }}px;
+    }
+
+    #jtp-section-{{ section_id }} .jtp-subtitle p{
+      font-size: {{ subtitle_size_desktop }}px;
+    }
+  }
+</style>
+
+<section id="jtp-section-{{ section_id }}" class="jtp-section">
+  {%- if bg_image != blank -%}
+    <img
+      class="jtp-bg"
+      src="{{ bg_image | image_url: width: 2000 }}"
+      srcset="
+        {{ bg_image | image_url: width: 750 }} 750w,
+        {{ bg_image | image_url: width: 1100 }} 1100w,
+        {{ bg_image | image_url: width: 1500 }} 1500w,
+        {{ bg_image | image_url: width: 2000 }} 2000w
+      "
+      sizes="100vw"
+      alt="{{ bg_image.alt | escape }}"
+      loading="lazy"
+      width="{{ bg_image.width }}"
+      height="{{ bg_image.height }}"
+    >
+  {%- endif -%}
+
+  <div class="jtp-overlay"></div>
+
+  <div class="jtp-content">
+    {%- if show_bubble_icon -%}
+      <div class="jtp-bubble-icon" aria-hidden="true">
+        {% comment %} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 60" fill="none">
+  <defs>
+    <style>
+      .b1 {
+        animation: float1 5s ease-in-out infinite, glow 3s ease-in-out infinite;
+        transform-origin: 24px 44px;
+      }
+
+      .b2 {
+        animation: float2 4s ease-in-out infinite, glow 2.5s ease-in-out infinite;
+        transform-origin: 34px 22px;
+      }
+
+      .b3 {
+        animation: float3 3.5s ease-in-out infinite, glow 2s ease-in-out infinite;
+        transform-origin: 16px 12px;
+      }
+
+      .b4 {
+        animation: float4 3s ease-in-out infinite, glow 1.8s ease-in-out infinite;
+        transform-origin: 38px 10px;
+      }
+
+      /* Floating animations */
+      @keyframes float1 {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-8px); }
+        100% { transform: translateY(0px); }
+      }
+
+      @keyframes float2 {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-6px); }
+        100% { transform: translateY(0px); }
+      }
+
+      @keyframes float3 {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-5px); }
+        100% { transform: translateY(0px); }
+      }
+
+      @keyframes float4 {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-4px); }
+        100% { transform: translateY(0px); }
+      }
+
+      /* Glow effect */
+      @keyframes glow {
+        0% {
+          stroke-opacity: 0.5;
+          filter: drop-shadow(0 0 2px white);
+        }
+        50% {
+          stroke-opacity: 1;
+          filter: drop-shadow(0 0 6px white);
+        }
+        100% {
+          stroke-opacity: 0.5;
+          filter: drop-shadow(0 0 2px white);
+        }
+      }
+    </style>
+  </defs>
+
+  <circle class="b1" cx="24" cy="44" r="14" stroke="white" stroke-width="1.5" fill="none" opacity="0.7"></circle>
+  <circle class="b2" cx="34" cy="22" r="9" stroke="white" stroke-width="1.5" fill="none" opacity="0.6"></circle>
+  <circle class="b3" cx="16" cy="12" r="5" stroke="white" stroke-width="1.5" fill="none" opacity="0.5"></circle>
+  <circle class="b4" cx="38" cy="10" r="3" stroke="white" stroke-width="1.5" fill="none" opacity="0.4"></circle>
+</svg> {% endcomment %}
+<img src="https://cdn.shopify.com/s/files/1/0814/7668/1964/files/Vera_Bubble_Vector.png?v=1771995568" />
+      </div>
+    {%- endif -%}
+
+    {%- if title != blank -%}
+      <h2 class="jtp-title">{{ title | escape }}</h2>
+    {%- endif -%}
+
+    {%- if subtitle != blank -%}
+      <div class="jtp-subtitle">{{ subtitle }}</div>
+    {%- endif -%}
+
+    <div class="jtp-form-wrapper">
+
+        {% content_for 'blocks' %}
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Join The Party",
+  "tag": "section",
+  "class": "section-join-the-party",
+  "settings": [
+    {
+      "type": "header",
+      "content": "🖼️ Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_gradient_overlay",
+      "label": "Enable Gradient Overlay",
+      "default": true,
+      "info": "When enabled, uses gradient. When disabled, uses solid overlay color."
+    },
+    {
+      "type": "color",
+      "id": "gradient_start_color",
+      "label": "Gradient Start Color",
+      "default": "#9B1FCC"
+    },
+    {
+      "type": "color",
+      "id": "gradient_end_color",
+      "label": "Gradient End Color",
+      "default": "#E91E8C"
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle",
+      "label": "Gradient Angle",
+      "min": 0,
+      "max": 360,
+      "step": 5,
+      "unit": "°",
+      "default": 135
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Solid Overlay Color",
+      "default": "#9B1FCC",
+      "info": "Used when gradient is disabled"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay Opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 75
+    },
+    {
+      "type": "header",
+      "content": "📐 Section Height"
+    },
+    {
+      "type": "range",
+      "id": "section_height_desktop",
+      "label": "Height - Desktop",
+      "min": 300,
+      "max": 1000,
+      "step": 10,
+      "unit": "px",
+      "default": 560
+    },
+    {
+      "type": "range",
+      "id": "section_height_tablet",
+      "label": "Height - Tablet",
+      "min": 300,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "default": 480
+    },
+    {
+      "type": "range",
+      "id": "section_height_mobile",
+      "label": "Height - Mobile",
+      "min": 300,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 520
+    },
+    {
+      "type": "header",
+      "content": "📦 Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Padding Top - Desktop",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Padding Bottom - Desktop",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top - Mobile",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom - Mobile",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "📍 Content Layout"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Horizontal Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "content_vertical_position",
+      "label": "Vertical Position",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "max_content_width",
+      "label": "Max Content Width",
+      "min": 300,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "default": 620
+    },
+    {
+      "type": "range",
+      "id": "input_max_width",
+      "label": "Email Input Max Width",
+      "min": 200,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 420
+    },
+    {
+      "type": "header",
+      "content": "✏️ Title Settings"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Join The Party."
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_desktop",
+      "label": "Title Font Size - Desktop",
+      "min": 20,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_tablet",
+      "label": "Title Font Size - Tablet",
+      "min": 20,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_mobile",
+      "label": "Title Font Size - Mobile",
+      "min": 18,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "select",
+      "id": "title_font_weight",
+      "label": "Title Font Weight",
+      "options": [
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra Bold (800)" },
+        { "value": "900", "label": "Black (900)" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select",
+      "id": "title_letter_spacing",
+      "label": "Title Letter Spacing",
+      "options": [
+        { "value": "0", "label": "None" },
+        { "value": "0.05", "label": "Tight (0.05em)" },
+        { "value": "0.1", "label": "Normal (0.1em)" },
+        { "value": "0.15", "label": "Wide (0.15em)" },
+        { "value": "0.2", "label": "Wider (0.2em)" },
+        { "value": "0.3", "label": "Widest (0.3em)" }
+      ],
+      "default": "0.1"
+    },
+    {
+      "type": "select",
+      "id": "title_line_height",
+      "label": "Title Line Height",
+      "options": [
+        { "value": "1.0", "label": "1.0" },
+        { "value": "1.1", "label": "1.1" },
+        { "value": "1.2", "label": "1.2" },
+        { "value": "1.3", "label": "1.3" },
+        { "value": "1.5", "label": "1.5" }
+      ],
+      "default": "1.1"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "📝 Subtitle / Description Settings"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle / Description",
+      "default": "<p>Sign up to be the first to hear about new flavors, limited releases, and what's next from Vera.</p>"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_font_size_desktop",
+      "label": "Subtitle Font Size - Desktop",
+      "min": 10,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "subtitle_font_size_tablet",
+      "label": "Subtitle Font Size - Tablet",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "subtitle_font_size_mobile",
+      "label": "Subtitle Font Size - Mobile",
+      "min": 10,
+      "max": 26,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "subtitle_line_height",
+      "label": "Subtitle Line Height",
+      "options": [
+        { "value": "1.3", "label": "1.3" },
+        { "value": "1.5", "label": "1.5" },
+        { "value": "1.7", "label": "1.7" },
+        { "value": "1.9", "label": "1.9" }
+      ],
+      "default": "1.7"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "✨ Decorative Elements"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bubble_icon",
+      "label": "Show Bubble Icon",
+      "default": true,
+      "info": "Displays decorative bubble SVG icon above the title"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+  ],
+  "presets": [
+    {
+      "name": "Join The Party",
+      "settings": {
+        "title": "Join The Party.",
+        "subtitle": "<p>Sign up to be the first to hear about new flavors, limited releases, and what's next from Vera.</p>",
+        "enable_gradient_overlay": true,
+        "gradient_start_color": "#9B1FCC",
+        "gradient_end_color": "#E91E8C",
+        "gradient_angle": 135,
+        "overlay_opacity": 75,
+        "section_height_desktop": 560,
+        "section_height_tablet": 480,
+        "section_height_mobile": 520,
+        "content_alignment": "center",
+        "content_vertical_position": "center",
+        "title_font_size_desktop": 56,
+        "title_font_size_tablet": 44,
+        "title_font_size_mobile": 34,
+        "title_font_weight": "700",
+        "title_letter_spacing": "0.1",
+        "title_color": "#FFFFFF",
+        "subtitle_font_size_desktop": 15,
+        "subtitle_font_size_tablet": 14,
+        "subtitle_font_size_mobile": 14,
+        "subtitle_color": "#FFFFFF",
+        "show_bubble_icon": true,
+        "max_content_width": 620,
+        "input_max_width": 420,
+        "padding_top_desktop": 60,
+        "padding_bottom_desktop": 60,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
+      }
+    }
+  ]
+}
+{% endschema %}

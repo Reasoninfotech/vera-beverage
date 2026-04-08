@@ -1,0 +1,9 @@
+# Mac files
+.DS_Store
+
+# Logs
+*.log
+
+# Project specific
+.env
+node_modules/
