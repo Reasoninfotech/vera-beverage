@@ -235,17 +235,19 @@
                   {%- endif -%}
 
                   {% if item.line_level_discount_allocations.size > 0 %}
-                    <ul
-                      class="list-unstyled"
-                      role="list"
-                    >
-                      {%- for discount in item.line_level_discount_allocations -%}
-                        <li>{{ discount.discount_application.title | escape }}</li>
-                      {%- endfor -%}
-                    </ul>
+                    {% unless settings.show_custom_discount_ui %}
+                      <ul
+                        class="list-unstyled"
+                        role="list"
+                      >
+                        {%- for discount in item.line_level_discount_allocations -%}
+                          <li>{{ discount.discount_application.title | escape }}</li>
+                        {%- endfor -%}
+                      </ul>
+                    {% endunless %}
                   {% endif %}
 
-                  <div>
+                  <div style="display: flex; align-items: center; gap: 8px;">
                     {% if item.original_price != item.final_price %}
                       <span class="visually-hidden">{{ 'content.price_sale' | t }}</span>
                       <span>{{ item.final_price | money }}</span>
@@ -257,6 +259,15 @@
                           {{ item.original_price | money }}
                         {% endif %}
                       </s>
+                      {% if settings.show_custom_discount_ui %}
+                        {% assign base_price = item.variant.compare_at_price | default: item.original_price %}
+                        {% if base_price > item.final_price %}
+                          {% assign discount_amount = base_price | minus: item.final_price %}
+                          <span style="background-color: #cc6096; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold;">
+                            {{ discount_amount | money }} OFF
+                          </span>
+                        {% endif %}
+                      {% endif %}
                     {% else %}
                       {% if item.variant.compare_at_price > item.original_price %}
                         <span class="visually-hidden">{{ 'content.price_sale' | t }}</span>
@@ -272,6 +283,16 @@
                       {% endif %}
                     {% endif %}
                   </div>
+
+                  {% if settings.show_custom_discount_ui and item.line_level_discount_allocations.size > 0 %}
+                    <ul class="list-unstyled custom-discount-list" role="list" style="margin-top: 5px;">
+                      {%- for discount in item.line_level_discount_allocations -%}
+                        <li style="font-size: 0.9em; color: #666; display: flex; align-items: center; gap: 5px;">
+                          Discounts: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" style="width: 16px;height: 16px;"><path d="M11 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2"></path><path fill-rule="evenodd" d="M9.276 1.5c-1.02 0-1.994.415-2.701 1.149l-4.254 4.417a2.75 2.75 0 0 0 .036 3.852l2.898 2.898a2.5 2.5 0 0 0 3.502.033l4.747-4.571a3.25 3.25 0 0 0 .996-2.341v-2.187a3.25 3.25 0 0 0-3.25-3.25zm-1.62 2.19a2.24 2.24 0 0 1 1.62-.69h1.974c.966 0 1.75.784 1.75 1.75v2.187c0 .475-.194.93-.536 1.26l-4.747 4.572a1 1 0 0 1-1.401-.014l-2.898-2.898a1.25 1.25 0 0 1-.016-1.75l4.253-4.418Z" ></path></svg>Volume Discount
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {% endif %}
                 </td>
                 <td
                   class="cart-items__quantity"
@@ -402,10 +423,10 @@
   }
 
   .cart-items__table-row {
-    --cart-item-price-width: 6rem;
+    --cart-item-price-width: auto;
 
     display: grid;
-    grid-template-columns: clamp(2.5rem, 15cqi, 7.5rem) minmax(0, 1fr) minmax(var(--cart-item-price-width), auto);
+    grid-template-columns: clamp(2.5rem, 15cqi, 7.5rem) minmax(0, 1fr) var(--cart-item-price-width);
     grid-template-areas:
       'media details price'
       'media quantity price'
@@ -609,9 +630,9 @@
 
   @container cart-items (min-width: 720px) {
     .cart-items__table-row {
-      --cart-item-price-width: 6rem;
+      --cart-item-price-width: auto;
 
-      grid-template-columns: 7.5rem 1fr 1fr minmax(var(--cart-item-price-width), auto);
+      grid-template-columns: 7.5rem 1fr 1fr var(--cart-item-price-width);
       grid-template-rows: min-content 1fr;
       grid-template-areas:
         'media details quantity price'

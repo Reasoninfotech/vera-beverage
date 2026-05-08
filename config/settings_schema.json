@@ -1834,6 +1834,12 @@
         "visible_if": "{{ settings.cart_type == 'drawer' }}"
       },
       {
+        "type": "checkbox",
+        "id": "show_custom_discount_ui",
+        "label": "Show Custom Discount UI",
+        "default": false
+      },
+      {
         "type": "header",
         "content": "t:content.cart_features"
       },
