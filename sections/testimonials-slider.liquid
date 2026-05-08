@@ -1,0 +1,921 @@
+{% comment %}
+  ============================================================
+  Section: Real People Real Rituals — Testimonials Slider
+  Theme:   Horizon
+  Slider:  Swiper.js (CDN)
+  Author:  Claude · Pixel-perfect from design reference
+  ============================================================
+{% endcomment %}
+
+{%- liquid
+  assign section_id   = 'testimonials-' | append: section.id
+  assign heading_text = section.settings.heading | default: 'REAL PEOPLE. REAL RITUALS.'
+-%}
+
+{% style %}
+  /* ── CSS Custom Properties ───────────────────────────── */
+  #{{ section_id }} {
+    --color-bg:           {{ section.settings.section_bg_color }};
+    --color-card-overlay: {{ section.settings.card_overlay_color }};
+    --card-overlay-opacity: {{ section.settings.card_overlay_opacity | divided_by: 100.0 }};
+    --color-heading:      {{ section.settings.heading_color }};
+    --color-star:         {{ section.settings.star_color }};
+    --color-name:         {{ section.settings.name_color }};
+    --color-title:        {{ section.settings.card_title_color }};
+    --color-body:         {{ section.settings.body_color }};
+    --color-arrow-border: {{ section.settings.arrow_border_color }};
+    --color-arrow-icon:   {{ section.settings.arrow_icon_color }};
+    --color-arrow-hover:  {{ section.settings.arrow_hover_color }};
+
+    --fs-heading-desktop: 42px;
+    --fs-heading-mobile:  28px;
+    --fs-name-desktop:    13px;
+    --fs-name-mobile:     12px;
+    --fs-card-title-desktop: 22px;
+    --fs-card-title-mobile:  18px;
+    --fs-body-desktop:    14px;
+    --fs-body-mobile:     15px;
+
+    --section-pt-desktop: {{ section.settings.padding_top_desktop }}px;
+    --section-pb-desktop: {{ section.settings.padding_bottom_desktop }}px;
+    --section-pt-mobile:  {{ section.settings.padding_top_mobile }}px;
+    --section-pb-mobile:  {{ section.settings.padding_bottom_mobile }}px;
+
+    --card-gap:    {{ section.settings.card_gap }}px;
+    --card-radius: {{ section.settings.card_border_radius }}px;
+  }
+
+  /* ── Section Wrapper ─────────────────────────────────── */
+  #{{ section_id }} {
+    background-color: var(--color-bg);
+    padding-top:    var(--section-pt-desktop);
+    padding-bottom: var(--section-pb-desktop);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── Section Heading ─────────────────────────────────── */
+  #{{ section_id }} .trs-heading {
+    color:{{ section.settings.heading_text_color }};
+    margin:0 auto {{ section.settings.heading_bottom_gap_desktop }}px;
+    text-align: center;
+  }
+
+  /* ── Container ───────────────────────────────────────── */
+  #{{ section_id }} .trs-container {
+    max-width:    {{ section.settings.container_max_width }}px;
+    margin-left:  auto;
+    margin-right: auto;
+    width:        100%;
+    padding-left:  {{ section.settings.section_side_padding_desktop }}px;
+    padding-right: {{ section.settings.section_side_padding_desktop }}px;
+  }
+
+  /* ── Swiper Container ────────────────────────────────── */
+  #{{ section_id }} .trs-swiper-outer {
+    position: relative;
+  }
+
+  #{{ section_id }} .swiper {
+    padding-bottom: 4px; /* prevents card shadow clip */
+  }
+
+  /* ── Card ────────────────────────────────────────────── */
+  #{{ section_id }} .trs-card {
+    border-radius:  var(--card-radius);
+    padding:        {{ section.settings.card_padding_desktop }}px;
+    height:         auto;
+    display:        flex;
+    flex-direction: column;
+    gap:            14px;
+    position:       relative;
+    overflow:       hidden;
+    transition:     transform .3s ease, box-shadow .3s ease;
+    background-color: transparent;
+    background-size:     cover;
+    background-position: center center;
+    background-repeat:   no-repeat;
+    height:100%;
+        min-height: 420px;
+
+  }
+
+  /* ── Card overlay (color wash over image) ────────────── */
+  #{{ section_id }} .trs-card::before {
+    content:      '';
+    position:     absolute;
+    inset:        0;
+    background:   var(--color-card-overlay);
+    opacity:      var(--card-overlay-opacity);
+    border-radius: inherit;
+    pointer-events: none;
+    z-index:      1;
+  }
+
+  /* ── Keep card content above overlay ────────────────── */
+  #{{ section_id }} .trs-card > * {
+    position: relative;
+    z-index:  2;
+  }
+
+  #{{ section_id }} .trs-card:hover {
+    transform:  translateY(-4px);
+  }
+
+  /* ── Stars ───────────────────────────────────────────── */
+  #{{ section_id }} .trs-stars {
+    display:   flex;
+    gap:       4px;
+    flex-wrap: wrap;
+  }
+
+  #{{ section_id }} .trs-stars svg {
+    width:  {{ section.settings.star_size }}px;
+    height: {{ section.settings.star_size }}px;
+    fill:   var(--color-star);
+  }
+
+  /* ── Reviewer Name ───────────────────────────────────── */
+  #{{ section_id }} .trs-name {
+    font-family: var(--areaextended) !important;
+    font-size: 14px;
+    height: 50px;
+    color: #ffffff;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  /* ── Card Title ──────────────────────────────────────── */
+  #{{ section_id }} .trs-card-title {
+    line-height: 32px;
+    color: #ffffff;
+    font-weight: 400;
+    font-family: var(--din) !important;
+        margin: 0;
+        text-transform: uppercase;
+        font-style:     italic;
+            font-size: 28px;
+  }
+
+  /* ── Body Copy ───────────────────────────────────────── */
+  #{{ section_id }} .trs-body {
+    font-size: 16px;
+    color: var(--color-body);
+    font-style: italic;
+    line-height: 27px;
+    margin: 0;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── Navigation Arrow ────────────────────────────────── */
+  #{{ section_id }} .trs-nav-btn {
+    position:        absolute;
+    top:             50%;
+    transform:       translateY(-50%);
+    z-index:         10;
+    width:           40px;
+    height:          40px;
+    border-radius:   50%;
+    border:          2px solid var(--color-arrow-border);
+    background:      transparent;
+    display:         flex;
+    align-items:     center;
+    justify-content: center;
+    cursor:          pointer;
+    transition:      background .25s, border-color .25s;
+    flex-shrink:     0;
+  }
+
+  #{{ section_id }} .trs-nav-btn svg {
+    width: 30px;
+    height: 30px;
+    stroke: var(--color-arrow-icon);
+    fill:   none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  #{{ section_id }} .trs-nav-btn:hover {
+    background:    var(--color-arrow-hover);
+    border-color:  var(--color-arrow-hover);
+  }
+
+  #{{ section_id }} .trs-nav-btn:hover svg {
+    stroke: #ffffff;
+  }
+
+  #{{ section_id }} .trs-btn-prev { left:  -50px; }
+  #{{ section_id }} .trs-btn-next { right: -50px; }
+
+  #{{ section_id }} .trs-nav-btn.swiper-button-disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  /* ── Pagination Dots ─────────────────────────────────── */
+  #{{ section_id }} .swiper-pagination {
+    bottom:     -32px;
+    position:   relative;
+    margin-top: {{ section.settings.dots_margin_top }}px;
+    text-align: center;
+  }
+
+  #{{ section_id }} .swiper-pagination-bullet {
+    width:            8px;
+    height:           8px;
+    background:       var(--color-arrow-border);
+    opacity:          0.4;
+    border-radius:    50%;
+    display:          inline-block;
+    margin:           0 4px;
+    transition:       opacity .25s, width .25s;
+    cursor:           pointer;
+  }
+
+  #{{ section_id }} .swiper-pagination-bullet-active {
+    opacity: 1;
+    width:   24px;
+    border-radius: 4px;
+    background: var(--color-arrow-border);
+  }
+
+  /* ── Mobile Styles ───────────────────────────────────── */
+  @media (max-width: 767px) {
+    #{{ section_id }} {
+      padding-top:    var(--section-pt-mobile);
+      padding-bottom: var(--section-pb-mobile);
+    }
+
+    #{{ section_id }} .trs-container {
+      padding-left:  {{ section.settings.section_side_padding_mobile }}px;
+      padding-right: {{ section.settings.section_side_padding_mobile }}px;
+    }
+
+
+
+    #{{ section_id }} .trs-card {
+      padding: {{ section.settings.card_padding_mobile }}px;
+      gap:     10px;
+          min-height: 350px;
+    }
+
+    #{{ section_id }} .trs-name       { font-size: var(--fs-name-mobile);     height: 24px;}
+    #{{ section_id }} .trs-card-title { font-size: var(--fs-card-title-mobile); }
+    #{{ section_id }} .trs-body       { font-size: var(--fs-body-mobile); }
+
+    #{{ section_id }} .trs-btn-prev { left:  -45px; }
+    #{{ section_id }} .trs-btn-next { right: -45px; }
+
+    #{{ section_id }} .trs-nav-btn {
+      width:  38px;
+      height: 38px;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    #{{ section_id }} .trs-container {
+      padding-left:  {{ section.settings.section_side_padding_tablet }}px;
+      padding-right: {{ section.settings.section_side_padding_tablet }}px;
+    }
+  }
+{% endstyle %}
+
+<section id="{{ section_id }}"
+         class="testimonials-section{% if section.settings.section_class != blank %} {{ section.settings.section_class }}{% endif %}"
+         aria-label="{{ 'sections.testimonials.aria_label' | t | default: 'Customer Testimonials' }}">
+
+  <div class="trs-container">
+
+    {%- if heading_text != blank -%}
+      <{{ section.settings.heading_tag }} class="trs-heading main_title">
+        {{- heading_text -}}
+      </{{ section.settings.heading_tag }}>
+    {%- endif -%}
+
+    <div class="trs-swiper-outer">
+
+    {%- if section.settings.show_nav -%}
+      <button class="trs-nav-btn trs-btn-prev" aria-label="Previous testimonial">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+    {%- endif -%}
+
+    <div class="swiper trs-swiper">
+      <div class="swiper-wrapper">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'testimonial' -%}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              {%- liquid
+                assign card_img = block.settings.card_image
+                if card_img == blank
+                  assign card_img = section.settings.card_default_image
+                endif
+                if card_img != blank
+                  assign card_img_url = card_img | image_url: width: 800
+                  assign card_bg_style = 'background-image:url(' | append: card_img_url | append: ');'
+                else
+                  assign card_bg_style = 'background-color:' | append: section.settings.card_fallback_color | append: ';'
+                endif
+              -%}
+              <article class="trs-card" style="{{ card_bg_style }}">
+
+                {%- comment %} ── Stars ── {%- endcomment -%}
+                {%- assign star_count = block.settings.rating | default: 5 -%}
+                <div class="trs-stars" aria-label="{{ star_count }} out of 5 stars">
+                  {%- for i in (1..star_count) -%}
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+                    </svg>
+                  {%- endfor -%}
+                </div>
+
+                {%- comment %} ── Name ── {%- endcomment -%}
+                {%- if block.settings.reviewer_name != blank -%}
+                  <p class="trs-name">{{ block.settings.reviewer_name }}</p>
+                {%- endif -%}
+
+                {%- comment %} ── Card Title ── {%- endcomment -%}
+                {%- if block.settings.review_title != blank -%}
+                  <h3 class="trs-card-title">{{ block.settings.review_title }}</h3>
+                {%- endif -%}
+
+                {%- comment %} ── Body ── {%- endcomment -%}
+                {%- if block.settings.review_body != blank -%}
+                  <p class="trs-body">{{ block.settings.review_body }}</p>
+                {%- endif -%}
+
+              </article>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.show_dots -%}
+        <div class="swiper-pagination"></div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_nav -%}
+      <button class="trs-nav-btn trs-btn-next" aria-label="Next testimonial">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    {%- endif -%}
+
+  </div>{%- comment %} /.trs-swiper-outer {%- endcomment -%}
+
+  </div>{%- comment %} /.trs-container {%- endcomment -%}
+
+</section>
+<script>
+  (function() {
+    function initTestimonialsSwiper() {
+      var el = document.querySelector('#{{ section_id }} .trs-swiper');
+      if (!el || !window.Swiper) return;
+
+      var slidesDesktop = {{ section.settings.slides_per_view_desktop }};
+      var slidesTablet  = {{ section.settings.slides_per_view_tablet }};
+      var slidesMobile  = {{ section.settings.slides_per_view_mobile }};
+      var gap           = {{ section.settings.card_gap }};
+      var loop          = {{ section.settings.loop_slider | json }};
+      var autoplay      = {{ section.settings.autoplay | json }};
+      var autoplayDelay = {{ section.settings.autoplay_delay }};
+      var speed         = {{ section.settings.transition_speed }};
+      var effect        = '{{ section.settings.transition_effect }}';
+
+      new Swiper(el, {
+        slidesPerView:  slidesMobile,
+        spaceBetween:   gap,
+        loop:           loop,
+        speed:          speed,
+        effect:         effect,
+        grabCursor:     true,
+        a11y:           { enabled: true },
+        keyboard:       { enabled: true },
+
+        autoplay: autoplay ? {
+          delay:                autoplayDelay,
+          disableOnInteraction: false,
+          pauseOnMouseEnter:    true
+        } : false,
+
+        pagination: {
+          el:        '#{{ section_id }} .swiper-pagination',
+          clickable: true
+        },
+
+        navigation: {
+          nextEl: '#{{ section_id }} .trs-btn-next',
+          prevEl: '#{{ section_id }} .trs-btn-prev'
+        },
+
+        breakpoints: {
+          768: {
+            slidesPerView: slidesTablet,
+            spaceBetween:  gap
+          },
+          1024: {
+            slidesPerView: slidesDesktop,
+            spaceBetween:  gap
+          }
+        }
+      });
+    }
+
+    /* Wait for Swiper CDN to load */
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(initTestimonialsSwiper, 100);
+      });
+    } else {
+      setTimeout(initTestimonialsSwiper, 100);
+    }
+
+    /* Shopify theme editor re-init */
+    document.addEventListener('shopify:section:load', function(e) {
+      if (e.detail.sectionId === '{{ section.id }}') {
+        setTimeout(initTestimonialsSwiper, 200);
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Testimonials Slider",
+  "tag": "section",
+  "class": "testimonials-slider-section",
+  "max_blocks": 20,
+  "settings": [
+
+    {
+      "type": "header",
+      "content": "📝 Section Content"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 800,
+      "max": 1920,
+      "step": 20,
+      "unit": "px",
+      "default": 1280
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "REAL PEOPLE. REAL RITUALS."
+    },
+        {
+      "type": "color",
+      "id": "heading_text_color",
+      "label": "Heading Text Color",
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading HTML Tag",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "p",  "label": "Paragraph" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "text",
+      "id": "section_class",
+      "label": "Extra CSS Class (optional)"
+    },
+
+    {
+      "type": "header",
+      "content": "🎨 Colors"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section Background",
+      "default": "#EEEAED"
+    },
+    {
+      "type": "header",
+      "content": "🖼️ Card Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_default_image",
+      "label": "Default Card Background Image",
+      "info": "Used for all cards that don't have their own image set"
+    },
+    {
+      "type": "color",
+      "id": "card_fallback_color",
+      "label": "Fallback Color (when no image set)",
+      "default": "#7B2D8B"
+    },
+    {
+      "type": "color",
+      "id": "card_overlay_color",
+      "label": "Card Overlay Color",
+      "info": "Color layer placed over the image for readability",
+      "default": "#3D0A55"
+    },
+    {
+      "type": "range",
+      "id": "card_overlay_opacity",
+      "label": "Card Overlay Opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 55
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Section Heading Color",
+      "default": "#6B2080"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "name_color",
+      "label": "Reviewer Name Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Review Title Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Review Body Color",
+      "default": "rgba(255,255,255,0.88)"
+    },
+    {
+      "type": "color",
+      "id": "arrow_border_color",
+      "label": "Arrow Border Color",
+      "default": "#7B2D8B"
+    },
+    {
+      "type": "color",
+      "id": "arrow_icon_color",
+      "label": "Arrow Icon Color",
+      "default": "#7B2D8B"
+    },
+    {
+      "type": "color",
+      "id": "arrow_hover_color",
+      "label": "Arrow Hover Fill Color",
+      "default": "#7B2D8B"
+    },
+
+    {
+      "type": "header",
+      "content": "🃏 Card Settings"
+    },
+    {
+      "type": "range",
+      "id": "card_padding_desktop",
+      "label": "Card Padding (Desktop)",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "card_padding_mobile",
+      "label": "Card Padding (Mobile)",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "Card Border Radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "star_size",
+      "label": "Star Icon Size",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+
+    {
+      "type": "header",
+      "content": "🔲 Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top (Mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "heading_bottom_gap_desktop",
+      "label": "Gap Below Heading (Desktop)",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "heading_bottom_gap_mobile",
+      "label": "Gap Below Heading (Mobile)",
+      "min": 12,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "section_side_padding_desktop",
+      "label": "Side Padding (Desktop)",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_side_padding_tablet",
+      "label": "Side Padding (Tablet)",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "section_side_padding_mobile",
+      "label": "Side Padding (Mobile)",
+      "min": 12,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+
+    {
+      "type": "header",
+      "content": "🎠 Slider Settings"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_desktop",
+      "label": "Slides Per View (Desktop)",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_tablet",
+      "label": "Slides Per View (Tablet)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_mobile",
+      "label": "Slides Per View (Mobile)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Gap Between Cards",
+      "min": 8,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "loop_slider",
+      "label": "Loop Slider",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_delay",
+      "label": "Autoplay Delay (ms)",
+      "min": 1000,
+      "max": 8000,
+      "step": 500,
+      "default": 4000
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "label": "Transition Speed (ms)",
+      "min": 200,
+      "max": 1200,
+      "step": 50,
+      "default": 500
+    },
+    {
+      "type": "select",
+      "id": "transition_effect",
+      "label": "Transition Effect",
+      "options": [
+        { "value": "slide",     "label": "Slide" },
+        { "value": "fade",      "label": "Fade" },
+        { "value": "coverflow", "label": "Coverflow" }
+      ],
+      "default": "slide"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_nav",
+      "label": "Show Arrow Navigation",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show Pagination Dots",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "dots_margin_top",
+      "label": "Dots Margin Top",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    }
+
+  ],
+
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "card_image",
+          "label": "Card Background Image",
+          "info": "Overrides the section default image for this card"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "reviewer_name",
+          "label": "Reviewer Name",
+          "default": "BLAKE"
+        },
+        {
+          "type": "text",
+          "id": "review_title",
+          "label": "Review Title",
+          "default": "LOVED IT!"
+        },
+        {
+          "type": "textarea",
+          "id": "review_body",
+          "label": "Review Body",
+          "default": "Testimonial copy goes here. Et quae nos am entesequi volupta dolutem et optatur ma volora vent. Nest eum ad qui optatiu ressinus. Ta volorehent videles nobis nonsequam, sint hilita vidus venimin rest, te audandit."
+        }
+      ]
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Testimonials Slider",
+      "category": "Social proof",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "reviewer_name": "BLAKE",
+            "review_title": "LOVED IT!",
+            "review_body": "Testimonial copy goes here. Et quae nos am entesequi volupta dolutem et optatur ma volora vent. Nest eum ad qui optatiu ressinus. Ta volorehent videles nobis nonsequam, sint hilita vidus venimin rest, te audandit."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "reviewer_name": "ANTHONY",
+            "review_title": "THE FLAVORS ARE AMAZING!",
+            "review_body": "Testimonial copy goes here. Et quae nos am entesequi volupta dolutem et optatur ma volora vent. Nest eum ad qui optatiu ressinus. Ta volorehent videles nobis nonsequam, sint hilita vidus venimin rest, te audandit."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "reviewer_name": "MICHAEL",
+            "review_title": "IT'S MY LATE MORNING WORK DRINK",
+            "review_body": "Testimonial copy goes here. Et quae nos am entesequi volupta dolutem et optatur ma volora vent. Nest eum ad qui optatiu ressinus. Ta volorehent videles nobis nonsequam, sint hilita vidus venimin rest, te audandit."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "reviewer_name": "SARAH",
+            "review_title": "GAME CHANGER FOR MY MORNINGS!",
+            "review_body": "Testimonial copy goes here. Et quae nos am entesequi volupta dolutem et optatur ma volora vent. Nest eum ad qui optatiu ressinus. Ta volorehent videles nobis nonsequam, sint hilita vidus venimin rest, te audandit."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

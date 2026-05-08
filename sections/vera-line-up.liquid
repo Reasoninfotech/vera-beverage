@@ -1,0 +1,499 @@
+{% comment %}
+  Vera Lineup Header Section
+  Compatible with: Horizon Theme
+  Section: vera-lineup-header
+{% endcomment %}
+
+<style>
+  #vera-lineup-{{ section.id }} {
+    background-color: {{ section.settings.background_color }};
+    padding: {{ section.settings.section_padding_desktop }}px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #vera-lineup-{{ section.id }} .vera-inner {
+    max-width: {{ section.settings.container_max_width }}px;
+    margin: 0 auto;
+  }
+
+  /* ── MAIN TITLE ── */
+  #vera-lineup-{{ section.id }} .vera-title {
+    font-weight: 500;
+    font-size: {{ section.settings.title_font_size_desktop }}px;
+    color: {{ section.settings.title_color }};
+    letter-spacing: {{ section.settings.title_letter_spacing }}px;
+    line-height: 1.15;
+    margin: 0 0 {{ section.settings.title_subtitle_gap_desktop }}px;
+    text-transform: {{ section.settings.title_text_transform }};
+  }
+
+  /* ── SUBTITLE / TAGLINE ── */
+  #vera-lineup-{{ section.id }} .vera-subtitle {
+    font-weight: {{ section.settings.subtitle_font.weight }};
+    font-size: {{ section.settings.subtitle_font_size_desktop }}px;
+    color: {{ section.settings.subtitle_color }};
+    letter-spacing: {{ section.settings.subtitle_letter_spacing }}px;
+    line-height: 1.3;
+    margin: 0 0 {{ section.settings.subtitle_body_gap_desktop }}px;
+    text-transform: {{ section.settings.subtitle_text_transform }};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+
+  #vera-lineup-{{ section.id }} .vera-subtitle .divider {
+    display: inline-block;
+    margin: 0 {{ section.settings.divider_spacing }}px;
+    color: {{ section.settings.divider_color }};
+    font-weight: 300;
+  }
+
+  /* ── BODY TEXT ── */
+  #vera-lineup-{{ section.id }} .vera-body{margin-top: 10px;}
+
+  #vera-lineup-{{ section.id }} .vera-body p{
+    font-size: {{ section.settings.body_font_size_desktop }}px;
+    color: {{ section.settings.body_color }};
+    letter-spacing: {{ section.settings.body_letter_spacing }}px;
+    line-height: {{ section.settings.body_line_height }}px;
+    margin: 0;
+    max-width: {{ section.settings.body_max_width }}px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ── OPTIONAL DECORATIVE LINE ── */
+  #vera-lineup-{{ section.id }} .vera-line {
+    width: {{ section.settings.decorative_line_width }}px;
+    height: {{ section.settings.decorative_line_height }}px;
+    background-color: {{ section.settings.decorative_line_color }};
+    margin: 0 auto {{ section.settings.title_subtitle_gap_desktop }}px;
+    display: {% if section.settings.show_decorative_line %}block{% else %}none{% endif %};
+    border-radius: 2px;
+  }
+
+  /* ── MOBILE OVERRIDES ── */
+  @media screen and (max-width: 749px) {
+    #vera-lineup-{{ section.id }} {
+      padding: {{ section.settings.section_padding_mobile }}px 16px;
+    }
+
+    #vera-lineup-{{ section.id }} .vera-title {
+      font-size: {{ section.settings.title_font_size_mobile }}px;
+      margin-bottom: {{ section.settings.title_subtitle_gap_mobile }}px;
+      letter-spacing: {{ section.settings.title_letter_spacing_mobile }}px;
+    }
+
+    #vera-lineup-{{ section.id }} .vera-subtitle {
+      font-size: {{ section.settings.subtitle_font_size_mobile }}px;
+      margin-bottom: {{ section.settings.subtitle_body_gap_mobile }}px;
+    }
+
+    #vera-lineup-{{ section.id }} .vera-body p{
+      font-size: {{ section.settings.body_font_size_mobile }}px;
+    }
+
+    #vera-lineup-{{ section.id }} .vera-line {
+      margin-bottom: {{ section.settings.title_subtitle_gap_mobile }}px;
+    }
+  }
+</style>
+
+<section
+  id="vera-lineup-{{ section.id }}"
+  class="vera-lineup-section"
+  aria-label="{{ section.settings.title | escape }}"
+>
+  <div class="vera-inner">
+
+    {% if section.settings.title != blank %}
+      <h2 class="vera-title">{{ section.settings.title | escape }}</h2>
+    {% endif %}
+
+    {% if section.settings.show_decorative_line %}
+      <div class="vera-line" aria-hidden="true"></div>
+    {% endif %}
+
+    {% if section.settings.subtitle_1 != blank or section.settings.subtitle_2 != blank or section.settings.subtitle_3 != blank %}
+      <p class="vera-subtitle">
+        {% if section.settings.subtitle_1 != blank %}
+          <span>{{ section.settings.subtitle_1 | escape }}</span>
+        {% endif %}
+
+        {% if section.settings.subtitle_2 != blank %}
+          {% if section.settings.subtitle_1 != blank %}
+            <span class="divider">{{ section.settings.divider_character }}</span>
+          {% endif %}
+          <span>{{ section.settings.subtitle_2 | escape }}</span>
+        {% endif %}
+
+        {% if section.settings.subtitle_3 != blank %}
+          {% if section.settings.subtitle_2 != blank %}
+            <span class="divider">{{ section.settings.divider_character }}</span>
+          {% endif %}
+          <span>{{ section.settings.subtitle_3 | escape }}</span>
+        {% endif %}
+      </p>
+    {% endif %}
+
+    {% if section.settings.body_text != blank %}
+      <div class="vera-body">{{ section.settings.body_text }}</div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Vera Lineup Header",
+  "tag": "section",
+  "class": "vera-lineup-wrapper",
+  "settings": [
+
+    {
+      "type": "header",
+      "content": "🎨 Layout & Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f2f2f2"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_desktop",
+      "label": "Section Padding – Desktop (px)",
+      "min": 20,
+      "max": 160,
+      "step": 4,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_padding_mobile",
+      "label": "Section Padding – Mobile (px)",
+      "min": 16,
+      "max": 100,
+      "step": 4,
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width (px)",
+      "min": 400,
+      "max": 1400,
+      "step": 20,
+      "default": 800
+    },
+
+    {
+      "type": "header",
+      "content": "✏️ Main Title"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title Text",
+      "default": "THE VERA LINEUP"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#7b2d6e"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_desktop",
+      "label": "Title Font Size – Desktop (px)",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_mobile",
+      "label": "Title Font Size – Mobile (px)",
+      "min": 16,
+      "max": 60,
+      "step": 1,
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "title_letter_spacing",
+      "label": "Title Letter Spacing – Desktop (em × 100)",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 8,
+      "info": "Value is divided by 100. e.g. 8 = 0.08em"
+    },
+    {
+      "type": "range",
+      "id": "title_letter_spacing_mobile",
+      "label": "Title Letter Spacing – Mobile (em × 100)",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "select",
+      "id": "title_text_transform",
+      "label": "Title Text Transform",
+      "options": [
+        { "value": "uppercase", "label": "UPPERCASE" },
+        { "value": "capitalize", "label": "Capitalize" },
+        { "value": "lowercase", "label": "lowercase" },
+        { "value": "none", "label": "None" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "title_subtitle_gap_desktop",
+      "label": "Gap: Title → Subtitle – Desktop (px)",
+      "min": 4,
+      "max": 60,
+      "step": 2,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "title_subtitle_gap_mobile",
+      "label": "Gap: Title → Subtitle – Mobile (px)",
+      "min": 4,
+      "max": 40,
+      "step": 2,
+      "default": 12
+    },
+
+    {
+      "type": "header",
+      "content": "💜 Decorative Line"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_decorative_line",
+      "label": "Show Decorative Line",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "decorative_line_width",
+      "label": "Line Width (px)",
+      "min": 20,
+      "max": 200,
+      "step": 4,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "decorative_line_height",
+      "label": "Line Height / Thickness (px)",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "color",
+      "id": "decorative_line_color",
+      "label": "Line Color",
+      "default": "#7b2d6e"
+    },
+
+    {
+      "type": "header",
+      "content": "🔤 Subtitle / Tagline"
+    },
+    {
+      "type": "text",
+      "id": "subtitle_1",
+      "label": "Subtitle Word 1",
+      "default": "MOOD"
+    },
+    {
+      "type": "text",
+      "id": "subtitle_2",
+      "label": "Subtitle Word 2",
+      "default": "FOCUS"
+    },
+    {
+      "type": "text",
+      "id": "subtitle_3",
+      "label": "Subtitle Word 3",
+      "default": "CLARITY"
+    },
+    {
+      "type": "text",
+      "id": "divider_character",
+      "label": "Divider Character",
+      "default": "|",
+      "info": "Character shown between subtitle words. e.g. | · — •"
+    },
+    {
+      "type": "range",
+      "id": "divider_spacing",
+      "label": "Divider Horizontal Spacing (px)",
+      "min": 4,
+      "max": 32,
+      "step": 2,
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider Color",
+      "default": "#7b2d6e"
+    },
+    {
+      "type": "font_picker",
+      "id": "subtitle_font",
+      "label": "Subtitle Font",
+      "default": "josefin_sans_n4"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#7b2d6e"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_font_size_desktop",
+      "label": "Subtitle Font Size – Desktop (px)",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "subtitle_font_size_mobile",
+      "label": "Subtitle Font Size – Mobile (px)",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "subtitle_letter_spacing",
+      "label": "Subtitle Letter Spacing (em × 100)",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "subtitle_text_transform",
+      "label": "Subtitle Text Transform",
+      "options": [
+        { "value": "uppercase", "label": "UPPERCASE" },
+        { "value": "capitalize", "label": "Capitalize" },
+        { "value": "lowercase", "label": "lowercase" },
+        { "value": "none", "label": "None" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_body_gap_desktop",
+      "label": "Gap: Subtitle → Body – Desktop (px)",
+      "min": 4,
+      "max": 40,
+      "step": 2,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "subtitle_body_gap_mobile",
+      "label": "Gap: Subtitle → Body – Mobile (px)",
+      "min": 4,
+      "max": 30,
+      "step": 2,
+      "default": 8
+    },
+
+    {
+      "type": "header",
+      "content": "📝 Body / Description Text"
+    },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "label": "Body Text",
+      "default": "<p>Only 45 calories. Lightly sparkling. No alcohol. No artificial stimulants. No added sugar.</p>"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body Text Color",
+      "default": "#4a4a4a"
+    },
+    {
+      "type": "range",
+      "id": "body_font_size_desktop",
+      "label": "Body Font Size – Desktop (px)",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "body_font_size_mobile",
+      "label": "Body Font Size – Mobile (px)",
+      "min": 10,
+      "max": 22,
+      "step": 1,
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "body_letter_spacing",
+      "label": "Body Letter Spacing (em × 100)",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "body_line_height",
+      "label": "Body Line Height",
+      "min": 10,
+      "max": 25,
+      "step": 1,
+      "default": 17,
+      "info": "Value is divided by 10. e.g. 17 = 1.7"
+    },
+    {
+      "type": "range",
+      "id": "body_max_width",
+      "label": "Body Text Max Width (px)",
+      "min": 200,
+      "max": 900,
+      "step": 20,
+      "default": 660
+    }
+
+  ],
+  "presets": [
+    {
+      "name": "Vera Lineup Header",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,809 @@
+{% comment %}
+  Section: Mood + Focus + Clarity Ingredient Carousel
+  Theme: Horizon
+  Features: Swiper.js carousel, hover slide-up effect, full schema settings
+{% endcomment %}
+
+{%- liquid
+  assign section_id = 'mfc-' | append: section.id
+  assign title_color = section.settings.title_color
+  assign title_size_desktop = section.settings.title_size_desktop
+  assign title_size_tablet = section.settings.title_size_tablet
+  assign title_size_mobile = section.settings.title_size_mobile
+  assign subtitle_color = section.settings.subtitle_color
+  assign subtitle_size_desktop = section.settings.subtitle_size_desktop
+  assign subtitle_size_mobile = section.settings.subtitle_size_mobile
+  assign bg_color = section.settings.background_color
+  assign btn_text = section.settings.button_text
+  assign btn_url = section.settings.button_url
+  assign btn_bg = section.settings.button_bg_color
+  assign btn_text_color = section.settings.button_text_color
+  assign btn_bg_hover = section.settings.button_bg_color_hover
+  assign btn_text_hover_color = section.settings.button_text_color_hover
+  assign btn_size_desktop = section.settings.button_font_size_desktop
+  assign btn_size_mobile = section.settings.button_font_size_mobile
+  assign card_bg = section.settings.card_bg_color
+  assign card_title_color = section.settings.card_title_color
+  assign card_title_size_desktop = section.settings.card_title_size_desktop
+  assign card_title_size_mobile = section.settings.card_title_size_mobile
+  assign card_desc_color = section.settings.card_desc_color
+  assign card_desc_size_desktop = section.settings.card_desc_size_desktop
+  assign card_desc_size_mobile = section.settings.card_desc_size_mobile
+  assign cards_desktop = section.settings.cards_per_row_desktop
+  assign cards_tablet = section.settings.cards_per_row_tablet
+  assign cards_mobile = section.settings.cards_per_row_mobile
+  assign card_gap = section.settings.card_gap
+  assign section_padding_top = section.settings.padding_top
+  assign section_padding_bottom = section.settings.padding_bottom
+-%}
+
+<style>
+  #{{ section_id }} {
+    background-color: {{ bg_color }};
+    padding-top: {{ section_padding_top }}px;
+    padding-bottom: {{ section_padding_bottom }}px;
+    overflow: hidden;
+  }
+
+  #{{ section_id }} .mfc-heading-wrap {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 0 15px;
+  }
+
+  #{{ section_id }} .mfc-title {
+    color: {{ title_color }};
+    font-size: {{ title_size_desktop }}px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0 0 12px;
+    line-height: 1.1;
+  }
+
+  #{{ section_id }} .mfc-subtitle {
+    color: {{ subtitle_color }};
+    font-size: {{ subtitle_size_desktop }}px;
+    margin: 0;
+    font-weight: 400;
+  }
+
+  /* Swiper Wrapper */
+  #{{ section_id }} .mfc-swiper-outer {
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 60px;
+    box-sizing: border-box;
+  }
+
+  #{{ section_id }} .swiper {
+    width: 100%;
+    overflow: visible;
+;
+  }
+
+  /* Card */
+  #{{ section_id }} .mfc-card {
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    background: {{ card_bg }};
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    height: auto;
+  }
+
+  #{{ section_id }} .mfc-card-inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Image area */
+  #{{ section_id }} .mfc-img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1.5;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  #{{ section_id }} .mfc-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  #{{ section_id }} .mfc-card:hover .mfc-img-wrap img {
+    transform: scale(1.04);
+  }
+
+  /* SVG icon on image */
+  #{{ section_id }} .mfc-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+  }
+
+  #{{ section_id }} .mfc-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 1.5;
+  }
+
+  /* Content below image */
+  #{{ section_id }} .mfc-card-content {
+    background: {{ card_bg }};
+    position: absolute;
+    bottom: 0;
+  }
+
+  /* Title bar */
+  #{{ section_id }} .mfc-card-title-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-top: 1px solid rgba(0,0,0,0.08);
+  }
+
+  #{{ section_id }} .mfc-card-title {
+    color: {{ card_title_color }};
+    font-size: {{ card_title_size_desktop }}px;
+    font-weight: 300;
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  #{{ section_id }} .mfc-plus-icon {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  #{{ section_id }} .mfc-plus-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke: {{ card_title_color }};
+    fill: none;
+    stroke-width: 2;
+    transition: transform 0.3s ease, stroke 0.3s ease;
+  }
+
+  /* Description — hidden by default, revealed on hover */
+  #{{ section_id }} .mfc-card-desc-wrap {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                padding 0.3s ease,
+                opacity 0.35s ease;
+    opacity: 0;
+    padding: 0 16px;
+  }
+
+  #{{ section_id }} .mfc-card-desc {
+    color: {{ card_desc_color }};
+    font-size: {{ card_desc_size_desktop }}px;
+    fo
+    line-height: 1.65;
+    margin: 0;
+    padding-bottom: 18px;
+  }
+
+  /* Hover state */
+  #{{ section_id }} .mfc-card:hover .mfc-card-desc-wrap {
+    max-height: 200px;
+    opacity: 1;
+    padding-top: 2px;
+  }
+
+  #{{ section_id }} .mfc-card:hover .mfc-plus-icon svg {
+    transform: rotate(45deg);
+    stroke: #c0386e;
+  }
+
+  #{{ section_id }} .mfc-card:hover .mfc-card-title-bar {
+    border-color: #e0e0e0;
+  }
+
+  /* Swiper Nav Buttons */
+  #{{ section_id }} .mfc-swiper-outer .swiper-button-prev,
+  #{{ section_id }} .mfc-swiper-outer .swiper-button-next {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.92);
+    border: 1px solid rgba(0,0,0,0.12);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    top: 50%;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+
+  #{{ section_id }} .mfc-swiper-outer .swiper-button-prev:hover,
+  #{{ section_id }} .mfc-swiper-outer .swiper-button-next:hover {
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  }
+
+  #{{ section_id }} .mfc-swiper-outer .swiper-button-prev::after,
+  #{{ section_id }} .mfc-swiper-outer .swiper-button-next::after {
+    font-size: 14px;
+    font-weight: 700;
+    color: #333;
+  }
+
+  #{{ section_id }} .mfc-swiper-outer .swiper-button-prev {
+    left: 8px;
+  }
+
+  #{{ section_id }} .mfc-swiper-outer .swiper-button-next {
+    right: 8px;
+  }
+
+  #{{ section_id }} .mfc-swiper-outer .swiper-button-disabled {
+    opacity: 0.35 !important;
+    pointer-events: none;
+  }
+
+  /* Button */
+  #{{ section_id }} .mfc-btn-wrap {
+    text-align: center;
+    margin-top: 44px;
+  }
+
+  #{{ section_id }} .mfc-btn {
+    display: inline-block;
+    background: {{ btn_bg }};
+    color: {{ btn_text_color }};
+    font-size: {{ btn_size_desktop }}px;
+    text-transform: uppercase;
+    padding: 12px 40px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    border-radius: 2px;
+  }
+
+  #{{ section_id }} .mfc-btn:hover {
+    background: {{ btn_bg_hover }};
+    color: {{ btn_text_hover_color }};
+  }
+
+  /* TABLET */
+  @media (max-width: 1024px) {
+    #{{ section_id }} .mfc-title {
+      font-size: {{ title_size_tablet }}px;
+    }
+  }
+
+  /* MOBILE */
+  @media (max-width: 767px) {
+
+   #{{ section_id }} {
+     padding-top: calc({{ section_padding_top }}px / 2);
+     padding-bottom: calc({{ section_padding_bottom }}px / 2); 
+   }
+
+   #{{ section_id }} .mfc-btn-wrap {
+     margin-top: 30px;
+   }
+
+  #{{ section_id }} .mfc-heading-wrap {
+    margin-bottom: 25px;
+   }
+
+    #{{ section_id }} .mfc-title {
+      font-size: {{ title_size_mobile }}px;
+    }
+    #{{ section_id }} .mfc-subtitle {
+      font-size: {{ subtitle_size_mobile }}px;
+    }
+    #{{ section_id }} .mfc-btn {
+      font-size: {{ btn_size_mobile }}px;
+      padding: 14px 28px;
+    }
+    #{{ section_id }} .mfc-card-title {
+      font-size: {{ card_title_size_mobile }}px;
+    }
+    #{{ section_id }} .mfc-card-desc {
+      font-size: {{ card_desc_size_mobile }}px;
+    }
+    #{{ section_id }} .mfc-swiper-outer {
+      padding: 0 36px;
+    }
+    #{{ section_id }} .mfc-swiper-outer .swiper-button-prev,
+    #{{ section_id }} .mfc-swiper-outer .swiper-button-next {
+      width: 34px;
+      height: 34px;
+    }
+    #{{ section_id }} .mfc-swiper-outer .swiper-button-prev::after,
+    #{{ section_id }} .mfc-swiper-outer .swiper-button-next::after {
+      font-size: 11px;
+    }
+    #{{ section_id }} .mfc-swiper-outer .swiper-button-prev {
+      left: 2px;
+    }
+    #{{ section_id }} .mfc-swiper-outer .swiper-button-next {
+      right: 2px;
+    }
+
+    #{{ section_id }} .mfc-img-wrap {
+        aspect-ratio: 1 / 1.3;
+    }
+
+  }
+
+  @media (max-width: 575px) {
+    #{{ section_id }} .mfc-title {
+      font-size: {{ title_size_mobile }}px;
+    }
+  }
+</style>
+
+<section id="{{ section_id }}" class="mfc-section">
+  <div class="mfc-heading-wrap">
+    {%- if section.settings.title != blank -%}
+      <h2 class="mfc-title">{{ section.settings.title }}</h2>
+    {%- endif -%}
+    {%- if section.settings.subtitle != blank -%}
+      <p class="mfc-subtitle">{{ section.settings.subtitle }}</p>
+    {%- endif -%}
+  </div>
+
+  <div class="mfc-swiper-outer">
+    <!-- Swiper -->
+    <div class="swiper {{ section_id }}-swiper">
+      <div class="swiper-wrapper">
+        {%- for block in section.blocks -%}
+          <div class="swiper-slide">
+            <div class="mfc-card" {{ block.shopify_attributes }}>
+              <div class="mfc-card-inner">
+                <div class="mfc-img-wrap">
+                  {%- if block.settings.image != blank -%}
+                    {{ block.settings.image | image_url: width: 800 | image_tag:
+                      loading: 'lazy',
+                      alt: block.settings.title,
+                      widths: '400, 600, 800'
+                    }}
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'mfc-placeholder-img' }}
+                  {%- endif -%}
+
+                  {%- if block.settings.icon_svg != blank -%}
+                    <span class="mfc-icon">{{ block.settings.icon_svg }}</span>
+                  {%- endif -%}
+                </div>
+
+                <div class="mfc-card-content">
+                  <div class="mfc-card-title-bar">
+                    <p class="mfc-card-title">{{ block.settings.title | default: 'Ingredient Name' }}</p>
+                    <span class="mfc-plus-icon">
+                      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </span>
+                  </div>
+                  <div class="mfc-card-desc-wrap">
+                    <p class="mfc-card-desc">{{ block.settings.description | default: 'Add a description for this ingredient.' }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+  </div>
+
+  {%- if section.settings.button_text != blank -%}
+    <div class="mfc-btn-wrap">
+      <a href="{{ section.settings.button_url | default: '#' }}" class="mfc-btn">
+        {{ section.settings.button_text }}
+      </a>
+    </div>
+  {%- endif -%}
+</section>
+
+
+<script>
+(function () {
+  var sectionEl = document.getElementById('{{ section_id }}');
+  if (!sectionEl) return;
+
+  var swiperEl = sectionEl.querySelector('.{{ section_id }}-swiper');
+  if (!swiperEl) return;
+
+  new Swiper(swiperEl, {
+    slidesPerView: {{ section.settings.cards_per_row_mobile }},
+    spaceBetween: {{ card_gap }},
+    navigation: {
+      prevEl: sectionEl.querySelector('.swiper-button-prev'),
+      nextEl: sectionEl.querySelector('.swiper-button-next'),
+    },
+    breakpoints: {
+      768: {
+        slidesPerView: {{ section.settings.cards_per_row_tablet }},
+        spaceBetween: {{ card_gap }},
+      },
+      1025: {
+        slidesPerView: {{ section.settings.cards_per_row_desktop }},
+        spaceBetween: {{ card_gap }},
+      }
+    }
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Mood Focus Clarity",
+  "tag": "section",
+  "class": "mfc-section-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f2f2f2"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Title"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "MOOD + FOCUS + CLARITY"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#7b1f6a"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Title Font Size (Desktop)",
+      "min": 18,
+      "max": 72,
+      "step": 1,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "title_size_tablet",
+      "label": "Title Font Size (Tablet)",
+      "min": 18,
+      "max": 72,
+      "step": 1,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Title Font Size (Mobile)",
+      "min": 18,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "header",
+      "content": "Subtitle"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "What's inside — and why it matters."
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#555555"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_desktop",
+      "label": "Subtitle Font Size (Desktop)",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_mobile",
+      "label": "Subtitle Font Size (Mobile)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Carousel Settings"
+    },
+    {
+      "type": "range",
+      "id": "cards_per_row_desktop",
+      "label": "Cards Visible (Desktop)",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "cards_per_row_tablet",
+      "label": "Cards Visible (Tablet)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "cards_per_row_mobile",
+      "label": "Cards Visible (Mobile)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Gap Between Cards",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Card Appearance"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Card Title Color",
+      "default": "#222222"
+    },
+    {
+      "type": "range",
+      "id": "card_title_size_desktop",
+      "label": "Card Title Font Size (Desktop)",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "card_title_size_mobile",
+      "label": "Card Title Font Size (Mobile)",
+      "min": 10,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "card_desc_color",
+      "label": "Card Description Color",
+      "default": "#444444"
+    },
+    {
+      "type": "range",
+      "id": "card_desc_size_desktop",
+      "label": "Card Description Font Size (Desktop)",
+      "min": 10,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "card_desc_size_mobile",
+      "label": "Card Description Font Size (Mobile)",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "FIND OUT MORE"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#d4145a"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color_hover",
+      "label": "Button Background Hover Color",
+      "default": "#d4145a"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color_hover",
+      "label": "Button Text Hover Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size_desktop",
+      "label": "Button Font Size (Desktop)",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_font_size_mobile",
+      "label": "Button Font Size (Mobile)",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingredient Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Card Image"
+        },
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Icon SVG (optional)",
+          "info": "Paste inline SVG code. Leave blank to use default icon."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Ingredient Name",
+          "default": "Ingredient Name"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description (shown on hover)",
+          "default": "Describe this ingredient and why it matters for your wellbeing."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mood Focus Clarity",
+      "category": "Custom",
+      "blocks": [
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "Red Grape (Polyphenols)",
+            "description": "Naturally occurring polyphenols from Vinifera red grapes help protect cells from oxidative stress and support heart health—providing a strong, time-tested foundation for everyday vitality."
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "Lion's Mane",
+            "description": "Traditionally used to support brain health, Lion's Mane helps promote focus, mental clarity, and cognitive performance — without overstimulation."
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "Ashwagandha",
+            "description": "An adaptogen known for helping the body manage stress, Ashwagandha supports calm mood and resilience, helping you feel steady and balanced throughout the day."
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "L-Theanine",
+            "description": "L-Theanine promotes a state of calm alertness — supporting focus and concentration while helping reduce mental tension and distractions."
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "Magnesium",
+            "description": "An essential mineral involved in hundreds of enzymatic reactions, Magnesium supports muscle and nerve function, energy production, and helps maintain a healthy, balanced mood."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

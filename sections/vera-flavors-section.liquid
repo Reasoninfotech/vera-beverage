@@ -1,0 +1,879 @@
+{% comment %}
+  VERA Productive Elixir — Flavors Swiper Slider Section
+  Compatible with Horizon theme
+  Uses: Swiper.js v11 (CDN) — no npm required
+  Full responsive: Mobile, Tablet, Desktop
+{% endcomment %}
+
+
+<section
+  class="vera-flavors-section"
+  id="vera-flavors-{{ section.id }}"
+  style="
+    --vf-section-bg:        {{ section.settings.section_bg_color }};
+    --vf-title-color:       {{ section.settings.title_color }};
+    --vf-title-d:           {{ section.settings.title_size_desktop }}px;
+    --vf-title-t:           {{ section.settings.title_size_tablet }}px;
+    --vf-title-m:           {{ section.settings.title_size_mobile }}px;
+    --vf-sub-color:         {{ section.settings.subtitle_color }};
+    --vf-sub-d:             {{ section.settings.subtitle_size_desktop }}px;
+    --vf-sub-t:             {{ section.settings.subtitle_size_tablet }}px;
+    --vf-sub-m:             {{ section.settings.subtitle_size_mobile }}px;
+    --vf-btn-bg:            {{ section.settings.button_bg_color }};
+    --vf-btn-color:         {{ section.settings.button_text_color }};
+    --vf-btn-hover-bg:      {{ section.settings.button_hover_bg_color }};
+    --vf-btn-hover-color:   {{ section.settings.button_hover_text_color }};
+    --vf-btn-d:             {{ section.settings.button_font_size_desktop }}px;
+    --vf-btn-t:             {{ section.settings.button_font_size_tablet }}px;
+    --vf-btn-m:             {{ section.settings.button_font_size_mobile }}px;
+    --vf-name-d:            {{ section.settings.card_name_size_desktop }}px;
+    --vf-name-t:            {{ section.settings.card_name_size_tablet }}px;
+    --vf-name-m:            {{ section.settings.card_name_size_mobile }}px;
+    --vf-overlay-d:         {{ section.settings.card_overlay_size_desktop }}px;
+    --vf-overlay-t:         {{ section.settings.card_overlay_size_tablet }}px;
+    --vf-overlay-m:         {{ section.settings.card_overlay_size_mobile }}px;
+    --vf-nav-color:         {{ section.settings.nav_arrow_color }};
+    --vf-nav-bg:            {{ section.settings.nav_arrow_bg }};
+    --vf-nav-hover-bg:      {{ section.settings.nav_arrow_hover_bg }};
+    --vf-dot-color:         {{ section.settings.pagination_color }};
+    --vf-dot-active:        {{ section.settings.pagination_active_color }};
+    --vf-pt:                {{ section.settings.padding_top }}px;
+    --vf-pb:                {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="vf-inner">
+
+    {%- if section.settings.title != blank or section.settings.subtitle != blank -%}
+      <div class="vf-header">
+        {%- if section.settings.title != blank -%}
+          <h2 class="vf-title">{{ section.settings.title }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subtitle != blank -%}
+          <p class="vf-subtitle">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="vf-slider-outer">
+
+      <!-- Swiper -->
+      <div class="swiper vf-swiper" id="vf-swiper-{{ section.id }}">
+        <div class="swiper-wrapper">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'flavor_card' -%}
+              <div
+                class="swiper-slide vf-card"
+                {{ block.shopify_attributes }}
+                style="
+                  --vf-card-name-color:    {{ block.settings.card_name_color }};
+                  --vf-card-overlay-color: {{ block.settings.card_overlay_text_color }};
+                "
+              >
+                {% if block.settings.product_url != blank %}
+                  <a class="vera_product_move" href="{{ block.settings.product_url }}"></a>
+                {% endif %}
+
+                <div class="vf-card__name">{{ block.settings.flavor_name }}</div>
+
+                <div class="vf-card__image-wrap">
+                  {%- if block.settings.flavor_image != blank -%}
+                    <img
+                      src="{{ block.settings.flavor_image | image_url: width: 600 }}"
+                      alt="{{ block.settings.flavor_name | escape }}"
+                      class="vf-card__img"
+                      width="300"
+                      height="500"
+                      loading="lazy"
+                    >
+                  {%- else -%}
+                    <div class="vf-card__placeholder">
+                      {{ 'product-1' | placeholder_svg_tag: 'vf-placeholder-svg' }}
+                    </div>
+                  {%- endif -%}
+
+                  {%- if block.settings.card_overlay_text != blank -%}
+                    <div class="vf-card__overlay">
+                      {{ block.settings.card_overlay_text | newline_to_br }}
+                    </div>
+                  {%- endif -%}
+                </div>
+
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        <!-- Pagination inside swiper -->
+        {%- if section.settings.show_pagination -%}
+          <div class="swiper-pagination vf-pagination" id="vf-pagi-{{ section.id }}"></div>
+        {%- endif -%}
+      </div>
+
+      <!-- Arrow Navigation outside swiper wrapper -->
+      {%- if section.settings.show_navigation -%}
+        <button class="vf-arrow vf-arrow--prev" id="vf-prev-{{ section.id }}" aria-label="Previous slide" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="vf-arrow vf-arrow--next" id="vf-next-{{ section.id }}" aria-label="Next slide" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      {%- endif -%}
+
+    </div>
+
+    {%- if section.settings.button_label != blank -%}
+      <div class="vf-cta">
+        <a href="{{ section.settings.button_url }}" class="vf-btn">
+          {{ section.settings.button_label }}
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<!-- ============================================================
+     STYLES
+============================================================ -->
+<style>
+/* ── Section wrapper ─────────────────────────────────────── */
+#vera-flavors-{{ section.id }} {
+  background: var(--vf-section-bg);
+  padding-top: var(--vf-pt);
+  padding-bottom: var(--vf-pb);
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* ── Inner max-width ──────────────────────────────────────── */
+#vera-flavors-{{ section.id }} .vf-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: 60px;
+  padding-right: 60px;
+  box-sizing: border-box;
+}
+
+/* ── Header ───────────────────────────────────────────────── */
+#vera-flavors-{{ section.id }} .vf-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+#vera-flavors-{{ section.id }} .vf-title {
+  color: var(--vf-title-color);
+  font-size: var(--vf-title-d);
+  text-transform: uppercase;
+  margin: 0 0 10px;
+  line-height: 1.1;
+}
+#vera-flavors-{{ section.id }} .vf-subtitle {
+  color: var(--vf-sub-color);
+  font-size: var(--vf-sub-d);
+  margin: 0;
+  line-height: 1.6;
+}
+
+
+/* ── Slider outer — holds swiper + arrows ─────────────────── */
+#vera-flavors-{{ section.id }} .vf-slider-outer {
+  position: relative;
+}
+
+/* ── Swiper ───────────────────────────────────────────────── */
+#vera-flavors-{{ section.id }} .vf-swiper {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ── Swiper Slide / Card ──────────────────────────────────── */
+
+.vera_product_move{display: block;position: absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;height: 100%;cursor: pointer;z-index: 1;}
+
+#vera-flavors-{{ section.id }} .vf-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  height: auto;
+}
+
+#vera-flavors-{{ section.id }} .vf-card__name {
+  color: var(--vf-card-name-color);
+  font-size: var(--vf-name-d);
+  font-family: var(--rift);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.2;
+  width: 100%;
+}
+
+#vera-flavors-{{ section.id }} .vf-card__image-wrap {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+#vera-flavors-{{ section.id }} .vf-card__img {
+  width: auto;
+  max-width: 100%;
+  max-height: 550px;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.42s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* ✅ FIX 2: pointer-events none — image drag swiper drag intercept karti hati */
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+#vera-flavors-{{ section.id }} .vf-card:hover .vf-card__img {
+  transform: translateY(-10px) scale(1.03);
+}
+
+#vera-flavors-{{ section.id }} .vf-card__placeholder {
+  width: 100%;
+  max-width: 240px;
+  opacity: 0.35;
+}
+#vera-flavors-{{ section.id }} .vf-placeholder-svg {
+  width: 100%;
+  height: auto;
+}
+
+/* ── Overlay text on image ────────────────────────────────── */
+#vera-flavors-{{ section.id }} .vf-card__overlay {
+  position: absolute;
+  bottom: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--vf-card-overlay-color);
+  font-size: var(--vf-overlay-d);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+  pointer-events: none;
+  line-height: 1.15;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+  white-space: nowrap;
+}
+
+/* ── Arrows ───────────────────────────────────────────────── */
+#vera-flavors-{{ section.id }} .vf-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0,0,0,0.11);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+    border: 2px solid var(--vf-nav-color);
+  outline: none;
+}
+#vera-flavors-{{ section.id }} .vf-arrow svg {
+    width: 30px;
+    height: 30px;
+    stroke: {{section.settings.nav_arrow_color}};
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+#vera-flavors-{{ section.id }} .vf-arrow:hover svg {
+  stroke:var(--vf-nav-bg);
+}
+#vera-flavors-{{ section.id }} .vf-arrow:hover {
+  background: var(--vf-nav-hover-bg);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.16);
+}
+#vera-flavors-{{ section.id }} .vf-arrow--prev { left: -22px; }
+#vera-flavors-{{ section.id }} .vf-arrow--next { right: -22px; }
+#vera-flavors-{{ section.id }} .vf-arrow.swiper-button-disabled {
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+/* ── Pagination dots ──────────────────────────────────────── */
+#vera-flavors-{{ section.id }} .vf-pagination {
+  position: static !important;
+  margin-top: 24px;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+#vera-flavors-{{ section.id }} .vf-pagination .swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--vf-dot-color);
+  opacity: 1;
+  margin: 0 !important;
+  transition: all 0.25s ease;
+  display: inline-block;
+  cursor: pointer;
+}
+#vera-flavors-{{ section.id }} .vf-pagination .swiper-pagination-bullet-active {
+  background: var(--vf-dot-active);
+  width: 24px;
+  border-radius: 4px;
+}
+
+.jtp-form-wrapper .email-signup__input-group .email-signup__input:focus-visible{outline: unset;outline-offset: unset} 
+
+/* ── CTA Button ───────────────────────────────────────────── */
+#vera-flavors-{{ section.id }} .vf-cta {
+  text-align: center;
+  margin-top: 52px;
+}
+#vera-flavors-{{ section.id }} .vf-btn {
+  display: inline-block;
+  background-color: var(--vf-btn-bg);
+  color: var(--vf-btn-color);
+  font-size: var(--vf-btn-d);
+  letter-spacing: 0;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 12px 40px;
+  border-radius: 0px;
+  border: 2px solid transparent;
+  transition: background-color 0.25s, color 0.25s, transform 0.22s, box-shadow 0.25s;
+  line-height: 1;
+}
+#vera-flavors-{{ section.id }} .vf-btn:hover {
+  background-color: var(--vf-btn-hover-bg);
+  color: var(--vf-btn-hover-color);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.20);
+}
+
+/* ── Tablet ≤ 1023px ─────────────────────────────────────── */
+@media screen and (max-width: 1023px) {
+  #vera-flavors-{{ section.id }} .vf-inner      { padding-left: 48px; padding-right: 48px; }
+  #vera-flavors-{{ section.id }} .vf-header     { margin-bottom: 36px; }
+  #vera-flavors-{{ section.id }} .vf-title       { font-size: var(--vf-title-t); }
+  #vera-flavors-{{ section.id }} .vf-subtitle    { font-size: var(--vf-sub-t); }
+  #vera-flavors-{{ section.id }} .vf-card__name  { font-size: var(--vf-name-t); }
+  #vera-flavors-{{ section.id }} .vf-card__overlay { font-size: var(--vf-overlay-t); bottom: 44px; }
+  #vera-flavors-{{ section.id }} .vf-btn         { font-size: var(--vf-btn-t); }
+  #vera-flavors-{{ section.id }} .vf-cta         { margin-top: 40px; }
+  #vera-flavors-{{ section.id }} .vf-card__img   { max-height: 450px; }
+  #vera-flavors-{{ section.id }} .vf-arrow--prev { left: -18px; }
+  #vera-flavors-{{ section.id }} .vf-arrow--next { right: -18px; }
+}
+
+/* ── Mobile ≤ 749px ──────────────────────────────────────── */
+@media screen and (max-width: 749px) {
+  #vera-flavors-{{ section.id }} .vf-inner      { padding-left: 40px; padding-right: 40px; }
+  #vera-flavors-{{ section.id }} .vf-header     { margin-bottom: 28px; }
+  #vera-flavors-{{ section.id }} .vf-title       { font-size: var(--vf-title-m); }
+  #vera-flavors-{{ section.id }} .vf-subtitle    { font-size: var(--vf-sub-m); }
+  #vera-flavors-{{ section.id }} .vf-card__name  { font-size: var(--vf-name-m); }
+  #vera-flavors-{{ section.id }} .vf-card__overlay { font-size: var(--vf-overlay-m); bottom: 36px; }
+  #vera-flavors-{{ section.id }} .vf-btn         { font-size: var(--vf-btn-m); padding: 13px 28px; }
+  #vera-flavors-{{ section.id }} .vf-cta         { margin-top: 32px; }
+  #vera-flavors-{{ section.id }} .vf-card__img   { max-height: 400px; }
+  #vera-flavors-{{ section.id }} .vf-arrow       { width: 36px; height: 36px; }
+  #vera-flavors-{{ section.id }} .vf-arrow--prev { left: -14px; }
+  #vera-flavors-{{ section.id }} .vf-arrow--next { right: -14px; }
+}
+</style>
+
+<script>
+(function () {
+  function initVFSwiper() {
+    var el = document.getElementById('vf-swiper-{{ section.id }}');
+    if (!el || el._vfSwiperInit) return;
+    el._vfSwiperInit = true;
+
+    var config = {
+      slidesPerView: {{ section.settings.slides_per_view_mobile }},
+      spaceBetween:  {{ section.settings.slides_space_mobile }},
+      loop:          {{ section.settings.loop_enabled }},
+      breakpoints: {
+        750: {
+          slidesPerView: {{ section.settings.slides_per_view_tablet }},
+          spaceBetween:  {{ section.settings.slides_space_tablet }}
+        },
+        1024: {
+          slidesPerView: {{ section.settings.slides_per_view_desktop }},
+          spaceBetween:  {{ section.settings.slides_space_desktop }}
+        }
+      }
+    };
+
+    {% if section.settings.show_navigation %}
+    /* ✅ FIX 3: DOM element directly pass karo — string selector Swiper v11 ma late-find issue karay */
+    config.navigation = {
+      prevEl: document.getElementById('vf-prev-{{ section.id }}'),
+      nextEl: document.getElementById('vf-next-{{ section.id }}'),
+      disabledClass: 'swiper-button-disabled'
+    };
+    {% endif %}
+
+    {% if section.settings.show_pagination %}
+    config.pagination = {
+      el: document.getElementById('vf-pagi-{{ section.id }}'),
+      clickable: true
+    };
+    {% endif %}
+
+    {% if section.settings.autoplay_enabled %}
+    config.autoplay = {
+      delay: {{ section.settings.autoplay_delay }},
+      disableOnInteraction: false,
+      pauseOnMouseEnter: true
+    };
+    {% endif %}
+
+    new Swiper(el, config);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initVFSwiper);
+  } else {
+    initVFSwiper();
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "VERA — Flavors Slider",
+  "tag": "section",
+  "class": "vera-flavors-section-outer",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "─── Section Layout ───"
+    },
+    {
+      "type": "color_background",
+      "id": "section_bg_color",
+      "label": "Section Background Color",
+      "default": "linear-gradient(to top, #e0e0df 0%, #e0e0df 30%, white 0%, white 100%)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0, "max": 140, "step": 4, "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0, "max": 140, "step": 4, "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "header",
+      "content": "─── Title ───"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "DELICIOUS COMES FIRST"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#6b1f7c"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Title Size — Desktop",
+      "min": 24, "max": 80, "step": 2, "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "title_size_tablet",
+      "label": "Title Size — Tablet",
+      "min": 20, "max": 60, "step": 2, "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Title Size — Mobile",
+      "min": 16, "max": 48, "step": 2, "unit": "px",
+      "default": 26
+    },
+    {
+      "type": "header",
+      "content": "─── Subtitle ───"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle Text",
+      "default": "Only 45 calories — crafted for flavor."
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#444444"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_desktop",
+      "label": "Subtitle Size — Desktop",
+      "min": 12, "max": 32, "step": 1, "unit": "px",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_tablet",
+      "label": "Subtitle Size — Tablet",
+      "min": 12, "max": 28, "step": 1, "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_mobile",
+      "label": "Subtitle Size — Mobile",
+      "min": 11, "max": 24, "step": 1, "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "─── Swiper Slider ───"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_desktop",
+      "label": "Slides Per View — Desktop",
+      "min": 1, "max": 6, "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_tablet",
+      "label": "Slides Per View — Tablet",
+      "min": 1, "max": 4, "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_mobile",
+      "label": "Slides Per View — Mobile",
+      "min": 1, "max": 3, "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "slides_space_desktop",
+      "label": "Gap Between Slides — Desktop",
+      "min": 0, "max": 80, "step": 4, "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "slides_space_tablet",
+      "label": "Gap Between Slides — Tablet",
+      "min": 0, "max": 60, "step": 4, "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "slides_space_mobile",
+      "label": "Gap Between Slides — Mobile",
+      "min": 0, "max": 40, "step": 4, "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "loop_enabled",
+      "label": "Enable Infinite Loop",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "─── Autoplay ───"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay_enabled",
+      "label": "Enable Autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_delay",
+      "label": "Autoplay Delay",
+      "min": 1000, "max": 8000, "step": 500, "unit": "ms",
+      "default": 3000
+    },
+    {
+      "type": "header",
+      "content": "─── Navigation Arrows ───"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show Arrow Buttons",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "nav_arrow_color",
+      "label": "Arrow Icon Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "nav_arrow_bg",
+      "label": "Arrow hover color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "nav_arrow_hover_bg",
+      "label": "Arrow Hover Background",
+      "default": "#eeeeee"
+    },
+    {
+      "type": "header",
+      "content": "─── Pagination Dots ───"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show Pagination Dots",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "pagination_color",
+      "label": "Dot Color",
+      "default": "#cccccc"
+    },
+    {
+      "type": "color",
+      "id": "pagination_active_color",
+      "label": "Active Dot Color",
+      "default": "#c0286a"
+    },
+    {
+      "type": "header",
+      "content": "─── Card — Flavor Name ───"
+    },
+    {
+      "type": "range",
+      "id": "card_name_size_desktop",
+      "label": "Flavor Name Size — Desktop",
+      "min": 12, "max": 48, "step": 1, "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "card_name_size_tablet",
+      "label": "Flavor Name Size — Tablet",
+      "min": 12, "max": 36, "step": 1, "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "card_name_size_mobile",
+      "label": "Flavor Name Size — Mobile",
+      "min": 12, "max": 32, "step": 1, "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "─── Card — Overlay Text (on image) ───"
+    },
+    {
+      "type": "range",
+      "id": "card_overlay_size_desktop",
+      "label": "Overlay Text Size — Desktop",
+      "min": 10, "max": 52, "step": 1, "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "card_overlay_size_tablet",
+      "label": "Overlay Text Size — Tablet",
+      "min": 10, "max": 40, "step": 1, "unit": "px",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "card_overlay_size_mobile",
+      "label": "Overlay Text Size — Mobile",
+      "min": 10, "max": 32, "step": 1, "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "─── Button ───"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "SHOP FOR YOUR FAVORITE"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background",
+      "default": "#c0286a"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Button Hover Background",
+      "default": "#9e1f56"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Button Hover Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size_desktop",
+      "label": "Button Size — Desktop",
+      "min": 10, "max": 24, "step": 1, "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_font_size_tablet",
+      "label": "Button Size — Tablet",
+      "min": 10, "max": 22, "step": 1, "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "button_font_size_mobile",
+      "label": "Button Size — Mobile",
+      "min": 10, "max": 20, "step": 1, "unit": "px",
+      "default": 13
+    }
+  ],
+
+  "blocks": [
+    {
+      "type": "flavor_card",
+      "name": "Flavor Card",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Flavor Info"
+        },
+        {
+         "type": "url",
+         "id": "product_url",
+         "label": "Product Url"
+        },
+        {
+          "type": "text",
+          "id": "flavor_name",
+          "label": "Flavor Name (above image)",
+          "default": "BLACK CHERRY",
+          "info": "Displayed above the can image as the card heading"
+        },
+        {
+          "type": "color",
+          "id": "card_name_color",
+          "label": "Flavor Name Color",
+          "default": "#c0286a"
+        },
+        {
+          "type": "image_picker",
+          "id": "flavor_image",
+          "label": "Flavor Can Image",
+          "info": "Transparent PNG recommended, minimum 600px wide"
+        },
+        {
+          "type": "header",
+          "content": "Overlay Text (on top of image)"
+        },
+        {
+          "type": "textarea",
+          "id": "card_overlay_text",
+          "label": "Overlay Text",
+          "default": "BLACK\nCHERRY",
+          "info": "Text shown on top of the can image like label text. Use Enter for new line. Leave blank to hide."
+        },
+        {
+          "type": "color",
+          "id": "card_overlay_text_color",
+          "label": "Overlay Text Color",
+          "default": "#ffffff"
+        }
+      ]
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "VERA — Flavors Slider",
+      "blocks": [
+        {
+          "type": "flavor_card",
+          "settings": {
+            "flavor_name": "BLACK CHERRY",
+            "card_name_color": "#c0286a",
+            "card_overlay_text": "BLACK\nCHERRY",
+            "card_overlay_text_color": "#ffffff"
+          }
+        },
+        {
+          "type": "flavor_card",
+          "settings": {
+            "flavor_name": "RASPBERRY",
+            "card_name_color": "#c0286a",
+            "card_overlay_text": "RASPBERRY",
+            "card_overlay_text_color": "#ffffff"
+          }
+        },
+        {
+          "type": "flavor_card",
+          "settings": {
+            "flavor_name": "BLUEBERRY MINT",
+            "card_name_color": "#6b1f7c",
+            "card_overlay_text": "BLUEBERRY\nMINT",
+            "card_overlay_text_color": "#ffffff"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,667 @@
+{% comment %}
+  Section: Grape Philosophy / Rich Text Content Section
+  Theme: Horizon
+  Features: Full responsive, mobile/tablet/desktop settings, richtext content, color & font controls
+{% endcomment %}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --section-bg: {{ section.settings.background_color }};
+    --title-color: {{ section.settings.title_color }};
+    --content-color: {{ section.settings.content_color }};
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --max-width: {{ section.settings.content_max_width }}px;
+
+    /* Desktop font sizes */
+    --title-size-desktop: {{ section.settings.title_font_size_desktop }}px;
+    --content-size-desktop: {{ section.settings.content_font_size_desktop }}px;
+    --title-line-height-desktop: {{ section.settings.title_line_height_desktop }};
+    --content-line-height-desktop: {{ section.settings.content_line_height_desktop }};
+
+    /* Tablet font sizes */
+    --title-size-tablet: {{ section.settings.title_font_size_tablet }}px;
+    --content-size-tablet: {{ section.settings.content_font_size_tablet }}px;
+
+    /* Mobile font sizes */
+    --title-size-mobile: {{ section.settings.title_font_size_mobile }}px;
+    --content-size-mobile: {{ section.settings.content_font_size_mobile }}px;
+
+    /* Spacing */
+    --title-margin-bottom: {{ section.settings.title_margin_bottom }}px;
+    --paragraph-gap: {{ section.settings.paragraph_gap }}px;
+
+    /* Alignment */
+    --text-align: {{ section.settings.text_alignment }};
+
+    background-color: var(--section-bg);
+    padding-top: var(--section-padding-top);
+    padding-bottom: var(--section-padding-bottom);
+  }
+
+  .gp-section__inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding-left: {{ section.settings.horizontal_padding }}px;
+    padding-right: {{ section.settings.horizontal_padding }}px;
+    text-align: var(--text-align);
+  }
+
+  /* ── Title ── */
+  .gp-section__title {
+    font-size: var(--title-size-desktop);
+    color: var(--title-color);
+    line-height: var(--title-line-height-desktop);
+    margin-top: 0;
+    margin-bottom: var(--title-margin-bottom);
+    font-weight: {{ section.settings.title_font_weight }};
+    letter-spacing: {{ section.settings.title_letter_spacing }}em;
+    {% if section.settings.title_uppercase %}text-transform: uppercase;{% endif %}
+    {% if section.settings.title_italic %}font-style: italic;{% endif %}
+  }
+
+  /* ── Richtext Content ── */
+  .gp-section__content {
+    font-size: var(--content-size-desktop);
+    color: var(--content-color);
+    line-height: var(--content-line-height-desktop);
+  }
+
+  .gp-section__content p {
+    margin-top: 0;
+    margin-bottom: var(--paragraph-gap);
+    font-size: var(--content-size-desktop);
+    color: var(--content-color);
+    line-height: var(--content-line-height-desktop);
+  }
+
+  .gp-section__content p:last-child {
+    margin-bottom: 0;
+  }
+
+  .gp-section__content h1,
+  .gp-section__content h2,
+  .gp-section__content h3,
+  .gp-section__content h4,
+  .gp-section__content h5,
+  .gp-section__content h6 {
+    color: var(--title-color);
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+
+  .gp-section__content a {
+    color: {{ section.settings.link_color }};
+    text-decoration: {{ section.settings.link_decoration }};
+  }
+
+  .gp-section__content a:hover {
+    color: {{ section.settings.link_hover_color }};
+  }
+
+  .gp-section__content ul,
+  .gp-section__content ol {
+    padding-left: 1.5em;
+    margin-bottom: var(--paragraph-gap);
+  }
+
+  .gp-section__content li {
+    margin-bottom: 0.4em;
+    font-size: var(--content-size-desktop);
+    color: var(--content-color);
+    line-height: var(--content-line-height-desktop);
+  }
+
+  .gp-section__content strong {
+    color: {{ section.settings.strong_color }};
+    font-weight: 700;
+  }
+
+  .gp-section__content em {
+    font-style: italic;
+  }
+
+  /* ── Divider (optional) ── */
+  {% if section.settings.show_divider %}
+  .gp-section__divider {
+    display: block;
+    width: {{ section.settings.divider_width }}px;
+    height: {{ section.settings.divider_height }}px;
+    background-color: {{ section.settings.divider_color }};
+    margin: {{ section.settings.divider_margin }}px {% if section.settings.text_alignment == 'center' %}auto{% elsif section.settings.text_alignment == 'right' %}0 0 auto{% else %}0 auto 0 0{% endif %};
+    border-radius: {{ section.settings.divider_height | divided_by: 2 }}px;
+  }
+  {% endif %}
+
+  /* ══════════════════════════════════════
+     TABLET  ≤ 1024px
+  ══════════════════════════════════════ */
+  @media screen and (max-width: 1024px) {
+    #shopify-section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top_tablet }}px;
+      padding-bottom: {{ section.settings.padding_bottom_tablet }}px;
+    }
+
+    .gp-section__inner {
+      padding-left: {{ section.settings.horizontal_padding_tablet }}px;
+      padding-right: {{ section.settings.horizontal_padding_tablet }}px;
+    }
+
+    .gp-section__title {
+      font-size: var(--title-size-tablet);
+    }
+
+    .gp-section__content,
+    .gp-section__content p,
+    .gp-section__content li {
+      font-size: var(--content-size-tablet);
+    }
+  }
+
+  /* ══════════════════════════════════════
+     MOBILE  ≤ 767px
+  ══════════════════════════════════════ */
+  @media screen and (max-width: 767px) {
+    #shopify-section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    }
+
+    .gp-section__inner {
+      padding-left: {{ section.settings.horizontal_padding_mobile }}px;
+      padding-right: {{ section.settings.horizontal_padding_mobile }}px;
+      {% if section.settings.mobile_text_align_override %}
+      text-align: {{ section.settings.text_alignment_mobile }};
+      {% endif %}
+    }
+
+    .gp-section__title {
+      font-size: var(--title-size-mobile);
+      letter-spacing: {{ section.settings.title_letter_spacing | times: 0.7 }}em;
+    }
+
+    .gp-section__content,
+    .gp-section__content p,
+    .gp-section__content li {
+      font-size: var(--content-size-mobile);
+    }
+  }
+</style>
+
+<section
+  class="gp-section"
+  id="section-{{ section.id }}"
+  aria-label="{{ section.settings.title | escape }}"
+>
+  <div class="gp-section__inner">
+
+    {% if section.settings.show_divider and section.settings.divider_position == 'above_title' %}
+      <span class="gp-section__divider"></span>
+    {% endif %}
+
+    {% unless section.settings.title == blank %}
+      <{{ section.settings.title_tag }} class="gp-section__title">
+        {{ section.settings.title | escape }}
+      </{{ section.settings.title_tag }}>
+    {% endunless %}
+
+    {% if section.settings.show_divider and section.settings.divider_position == 'below_title' %}
+      <span class="gp-section__divider"></span>
+    {% endif %}
+
+    {% unless section.settings.content == blank %}
+      <div class="gp-section__content rte">
+        {{ section.settings.content }}
+      </div>
+    {% endunless %}
+
+    {% if section.settings.show_divider and section.settings.divider_position == 'below_content' %}
+      <span class="gp-section__divider"></span>
+    {% endif %}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Grape Philosophy",
+  "tag": "section",
+  "class": "section-grape-philosophy",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+
+    {
+      "type": "header",
+      "content": "📝 Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "OUR GRAPE-FIRST PHILOSOPHY."
+    },
+    {
+      "type": "select",
+      "id": "title_tag",
+      "label": "Heading HTML Tag",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "p",  "label": "Paragraph" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Vera began with a simple belief: the best way to support modern wellness is to start with ingredients that humans have trusted for thousands of years.</p><p>Before energy drinks, before supplements, before artificial shortcuts — there were grapes.</p><p>Vinifera red grapes have been part of the human diet for centuries, valued across cultures for their antioxidant content, heart-supporting properties, and role in everyday vitality.</p><p>Vera was born from the idea that modern functional beverages had moved too far away from real, recognizable ingredients. We wanted to bring things back to something honest, familiar, and proven — then thoughtfully enhance it for today.</p><p>That's why every can of Vera starts with unfermented Vinifera red grape juice, rich in naturally occurring polyphenols. It's not a flavor added later. It's the foundation.</p>"
+    },
+
+    {
+      "type": "header",
+      "content": "🎨 Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#F0EEF0"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#7B2D8B"
+    },
+    {
+      "type": "color",
+      "id": "content_color",
+      "label": "Body Text Color",
+      "default": "#3D3340"
+    },
+    {
+      "type": "color",
+      "id": "strong_color",
+      "label": "Bold Text Color",
+      "default": "#7B2D8B"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link Color",
+      "default": "#7B2D8B"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link Hover Color",
+      "default": "#5A1F68"
+    },
+    {
+      "type": "select",
+      "id": "link_decoration",
+      "label": "Link Underline",
+      "options": [
+        { "value": "underline", "label": "Underline" },
+        { "value": "none",      "label": "None" }
+      ],
+      "default": "underline"
+    },
+
+    {
+      "type": "header",
+      "content": "🖥️ Desktop – Title Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_desktop",
+      "label": "Title Font Size – Desktop (px)",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "default": 52
+    },
+    {
+    "type": "range",
+    "id": "title_line_height_desktop",
+    "label": "Title Line Height – Desktop",
+    "min": 1,
+    "max": 2,
+    "step": 0.1,
+    "default": 1.1
+    },
+    {
+      "type": "select",
+      "id": "title_font_weight",
+      "label": "Title Font Weight",
+      "options": [
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-Bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra-Bold (800)" },
+        { "value": "900", "label": "Black (900)" }
+      ],
+      "default": "700"
+    },
+    {
+        "type": "range",
+        "id": "title_letter_spacing",
+        "label": "Title Letter Spacing (em)",
+        "min": -0.1,
+        "max": 0.3,
+        "step": 0.1,
+        "default": 0.0
+    },
+    {
+      "type": "checkbox",
+      "id": "title_uppercase",
+      "label": "Uppercase Title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "title_italic",
+      "label": "Italic Title",
+      "default": false
+    },
+
+    {
+      "type": "header",
+      "content": "🖥️ Desktop – Body Typography"
+    },
+    {
+      "type": "range",
+      "id": "content_font_size_desktop",
+      "label": "Body Font Size – Desktop (px)",
+      "min": 12,
+      "max": 36,
+      "step": 1,
+      "default": 17
+    },
+    {
+    "type": "range",
+    "id": "content_line_height_desktop",
+    "label": "Body Line Height – Desktop",
+    "min": 1,
+    "max": 2.5,
+    "step": 0.1,
+    "default": 1.8
+    },
+    {
+      "type": "header",
+      "content": "📱 Tablet – Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_tablet",
+      "label": "Title Font Size – Tablet (px)",
+      "min": 18,
+      "max": 80,
+      "step": 1,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "content_font_size_tablet",
+      "label": "Body Font Size – Tablet (px)",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "default": 16
+    },
+
+    {
+      "type": "header",
+      "content": "📲 Mobile – Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_mobile",
+      "label": "Title Font Size – Mobile (px)",
+      "min": 16,
+      "max": 60,
+      "step": 1,
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "content_font_size_mobile",
+      "label": "Body Font Size – Mobile (px)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 15
+    },
+
+    {
+      "type": "header",
+      "content": "📐 Alignment"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left",   "label": "Left"   },
+        { "value": "center", "label": "Center" },
+        { "value": "right",  "label": "Right"  }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_text_align_override",
+      "label": "Override text alignment on Mobile",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "text_alignment_mobile",
+      "label": "Text Alignment – Mobile",
+      "options": [
+        { "value": "left",   "label": "Left"   },
+        { "value": "center", "label": "Center" },
+        { "value": "right",  "label": "Right"  }
+      ],
+      "default": "left",
+      "info": "Only applies when 'Override text alignment on Mobile' is enabled."
+    },
+
+    {
+      "type": "header",
+      "content": "📏 Spacing"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Content Max Width (px)",
+      "min": 400,
+      "max": 1400,
+      "step": 10,
+      "default": 720
+    },
+    {
+      "type": "range",
+      "id": "title_margin_bottom",
+      "label": "Space After Title (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "paragraph_gap",
+      "label": "Paragraph Gap (px)",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "default": 24
+    },
+
+    {
+      "type": "header",
+      "content": "🖥️ Desktop – Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top – Desktop (px)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom – Desktop (px)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "horizontal_padding",
+      "label": "Horizontal Padding – Desktop (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 40
+    },
+
+    {
+      "type": "header",
+      "content": "📱 Tablet – Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_tablet",
+      "label": "Padding Top – Tablet (px)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_tablet",
+      "label": "Padding Bottom – Tablet (px)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "horizontal_padding_tablet",
+      "label": "Horizontal Padding – Tablet (px)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 32
+    },
+
+    {
+      "type": "header",
+      "content": "📲 Mobile – Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top – Mobile (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom – Mobile (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "horizontal_padding_mobile",
+      "label": "Horizontal Padding – Mobile (px)",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "default": 20
+    },
+
+    {
+      "type": "header",
+      "content": "➖ Divider"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Show Decorative Divider",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "divider_position",
+      "label": "Divider Position",
+      "options": [
+        { "value": "above_title",   "label": "Above Title"   },
+        { "value": "below_title",   "label": "Below Title"   },
+        { "value": "below_content", "label": "Below Content" }
+      ],
+      "default": "below_title"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider Color",
+      "default": "#7B2D8B"
+    },
+    {
+      "type": "range",
+      "id": "divider_width",
+      "label": "Divider Width (px)",
+      "min": 20,
+      "max": 400,
+      "step": 4,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "divider_height",
+      "label": "Divider Thickness (px)",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "divider_margin",
+      "label": "Divider Vertical Margin (px)",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "default": 20
+    }
+
+  ],
+  "presets": [
+    {
+      "name": "Grape Philosophy",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}
